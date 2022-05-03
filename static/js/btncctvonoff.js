@@ -1,7 +1,5 @@
 var state = 0
-var host = "192.168.0.24";
-var port = 9001;
-var mqtt;
+
 var state = 0;
 function onConnect(){
     console.log("연결완료")
