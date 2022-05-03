@@ -1,36 +1,5 @@
-var state = 0
 
 var state = 0;
-function onConnect(){
-    console.log("연결완료")
-    mqtt.subscribe("iot/#")
-}
-
-function onMessageArrived(msg){
-    topic = msg.destinationName.split('/')
-    if(topic[1] == "camera"){
-    document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
-    }
-}
-function onFailure(){
-    console.log("연결실패");
-    setTimeout(MQTTConnect,reconnectTimeout);
-}
-function sendMsg(msg){
-  message = new Paho.MQTT.Message(msg);
-  message.destinationName = "camerachk"
-  mqtt.send(message);
-}
-function MQTTConnect(){
-    mqtt = new Paho.MQTT.Client(host,port,"streaming");
-    var options = {
-        timeout:3,
-        onSuccess : onConnect,
-        onFailure : onFailure,
-    }
-    mqtt.onMessageArrived = onMessageArrived;
-    mqtt.connect(options);
-}
 
 //function CctvOnOff() {
 //    if (state == 0){
