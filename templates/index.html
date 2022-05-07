@@ -61,7 +61,7 @@
     var host = "192.168.0.24"
     var port = 9001
     var mqtt;
-
+    var distance = 0;
     function onConnect(){
         console.log("연결완료")
         mqtt.subscribe("iot/#")
@@ -69,8 +69,13 @@
 
     function onMessageArrived(msg){
         topic = msg.destinationName.split('/')
-        if(topic[1] == "camera"){
-        document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
+        if(topic[1] == "mycamera"){
+          document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
+        }else if (topic[1] == "dis"){
+          distance = parseInt(msg.payloadString);
+          if (distance <= 40){
+                alert("보안장치를 먼저 해제해 주세요")
+          }
         }
     }
     function onFailure(){

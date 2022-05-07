@@ -22,7 +22,7 @@ function CctvOnOff() {
         sendMsg("stop")
         setTimeout(function() {
           document.getElementById('myimg').src ="static/img/cctvwait.png"
-        }, 100);
+        }, 500);
         }
     state = !state
 };
