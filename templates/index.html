@@ -76,6 +76,12 @@
           if (distance <= 40){
                 alert("보안장치를 먼저 해제해 주세요")
           }
+        }else if (topic[1] == "mypet"){
+          out_msg = "메시지 전달:"+msg.payloadString;
+          content = document.getElementById("mypet");
+          content.innerHTML = out_msg;
+        }else if (topic[1] == "sound"){
+          alert("큰 소리가 감지되었습니다.");
         }
     }
     function onFailure(){
@@ -274,7 +280,7 @@
                             </div>
                             <div class="dropdown">
                               <div class="d-flex">
-                                <span class="fw-semibold d-block mb-1">반려동물 밥 시간 &nbsp&nbsp</span>
+                                <span class="fw-semibold d-block mb-1">반려동물 밥 시간 &nbsp&nbsp</span><span id="mypet"/>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" checked />
                                 </div>
