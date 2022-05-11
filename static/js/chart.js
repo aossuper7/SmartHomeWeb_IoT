@@ -53,11 +53,11 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   },
                                   smooth: true, //부드러운 line 표현
                                   yAxisIndex: 0, //yAxis 0번째 사용
-                                  data: (function (){
+                                  data: (function data_temp(temp){
                                     var res = [];
                                     var len = 0;
                                     while (len < 20) {
-                                      res.push((Math.random()*30 + 5).toFixed(1) - 0); //랜덤 데이터 생성
+                                      res.push(temp); //처음 온도 데이터 표시
                                       len++;
                                     }
                                     return res;
@@ -117,11 +117,11 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   },
                                   smooth: true, //부드러운 line 표현
                                   yAxisIndex: 0, //yAxis 0번째 사용
-                                  data: (function (){
+                                  data: (function data_humid(humid){
                                     var res = [];
                                     var len = 0;
                                     while (len < 20) {
-                                      res.push((Math.random()*60 + 5).toFixed(1) - 0); //랜덤 데이터 생성
+                                      res.push(humid); //처음 습도 데이터 표시
                                       len++;
                                     }
                                     return res;
@@ -185,7 +185,7 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                     var res = [];
                                     var len = 0;
                                     while (len < 20) {
-                                      res.push((Math.random()*150 + 5).toFixed(1) - 0); //랜덤 데이터 생성
+                                      res.push((Math.random()*60 + 5).toFixed(1) - 0); //미세먼지 수치를 넣어야됨
                                       len++;
                                     }
                                     return res;
@@ -213,8 +213,8 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                 data1.shift();
                                 data2.shift();
                                 //데이터의 가장 오른쪽 값을 추가
-                                data0.push((Math.random() * 30 + 5).toFixed(1) - 0);
-                                data1.push((Math.random() * 100).toFixed(1) - 0);
+                                data0.push(temp);
+                                data1.push(humid);
                                 data2.push((Math.random() * 300).toFixed(1) - 0);
 
 
@@ -230,4 +230,4 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                 myChart1.setOption(option1);
                                 myChart2.setOption(option2);
                                 myChart3.setOption(option3);
-                            }, 2100);
+                            }, 10000);
