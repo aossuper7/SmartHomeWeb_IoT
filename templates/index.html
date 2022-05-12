@@ -55,6 +55,8 @@
     <script type="text/javascript" src="{% static 'js/clock.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/btncctvonoff.js' %}">
     </script>
+    <script type="text/javascript" src="{% static 'js/mypet.js' %}">
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js"
@@ -63,48 +65,61 @@
     <script src="{% static 'js/rfid_alert.js' %}"></script>
     <script src="https://code.jquery.com/jquery-latest.js"></script>
 
-<!--    <script type="text/javascript">-->
-<!--        var host = "192.168.219.102";-->
-<!--        var distance = 0;-->
-<!--        var port = 9001;-->
-<!--        var mqtt;-->
+    <script type="text/javascript">
+        var host = "192.168.219.102";
+        var distance = 0;
+        var port = 9001;
+        var mqtt;
 
-<!--        function onConnect(){-->
-<!--            console.log("접속완료");-->
-<!--            mqtt.subscribe("iot/servo");-->
-<!--        }-->
-<!--        // callback함수 - 접속 실패하면 호출되는 함수-->
-<!--        function onFailure(){-->
-<!--            console.log("접속실패");-->
-<!--            setTimeout(MQTTConnect,reconnectTimeout);-->
-<!--        }-->
-<!--        function onMessageArrived(msg){-->
-<!--            topic = msg.destinationName.split('/')-->
-<!--            if(topic[1] == "mycamera"){-->
-<!--              document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))-->
-<!--            }else if (topic[1] == "dis"){-->
-<!--              distance = parseInt(msg.payloadString);-->
-<!--              if (distance <= 40){-->
-<!--                    alert("보안장치를 먼저 해제해 주세요")-->
-<!--              }-->
-<!--            }-->
-<!--        }-->
-<!--        function sendMsg(msg){-->
-<!--          message = new Paho.MQTT.Message(msg);-->
-<!--          message.destinationName = "iot/led"-->
-<!--          mqtt.send(message);-->
-<!--        }-->
-<!--        function MQTTConnect(){-->
-<!--            mqtt = new Paho.MQTT.Client(host,port,"streaming");-->
-<!--            var options = {-->
-<!--                timeout:3,-->
-<!--                onSuccess:onConnect,-->
-<!--                onFailure:onFailure,-->
-<!--            }-->
-<!--            mqtt.onMessageArrived = onMessageArrived;-->
-<!--            mqtt.connect(options);-->
-<!--        }-->
-<!--    </script>-->
+        function onConnect(){
+            console.log("접속완료");
+            mqtt.subscribe("iot/servo");
+            mqtt.subscribe("mypet/waterlevel");
+        }
+        // callback함수 - 접속 실패하면 호출되는 함수
+        function onFailure(){
+            console.log("접속실패");
+            setTimeout(MQTTConnect,reconnectTimeout);
+        }
+        function onMessageArrived(msg){
+          topic = msg.destinationName.split('/')
+          if(topic[1] == "mycamera"){
+            document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
+          }else if (topic[1] == "dis"){
+            distance = parseInt(msg.payloadString);
+            if (distance <= 40){
+                  alert("보안장치를 먼저 해제해 주세요")
+            }
+          }else if (topic[1] == "waterlevel"){
+            out_msg = msg.payloadString+"cm";
+            content = document.getElementById("waterlevel");
+            content.innerHTML = out_msg;
+
+          }else if (topic[1] == "sound"){
+            alert("큰 소리가 감지되었습니다.");
+          }
+        }
+        function sendMsg(topic, msg){
+          message = new Paho.MQTT.Message(msg);
+          message.destinationName = topic
+          mqtt.send(message);
+        }
+        function MQTTConnect(){
+            mqtt = new Paho.MQTT.Client(host,port,"streaming");
+            var options = {
+                timeout:3,
+                onSuccess:onConnect,
+                onFailure:onFailure,
+            }
+            mqtt.onMessageArrived = onMessageArrived;
+            mqtt.connect(options);
+        }
+        function setTime(){
+          setAm = document.getElementById("am").value;
+          setPm = document.getElementById("pm").value;
+          sendMsg("mypet/setTime", setAm+"/"+setPm)
+        }
+    </script>
 
     <script type="text/javascript">
     $(document).ready(function(){
@@ -300,19 +315,22 @@
                             </div>
                             <div class="dropdown">
                               <div class="d-flex">
-                                <span class="fw-semibold d-block mb-1">반려동물 밥 시간 &nbsp&nbsp</span><span id="mypet"/>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" checked />
-                                </div>
+                                <span class="fw-semibold d-block mb-1">반려동물&nbsp&nbsp</span><span id="mypet"/>
                               </div>
                               <div class="input-group">
-                                <button type="button" class="btn btn-outline-primary" onclick="#">Save</button>
-                                <input type="text" class="form-control" placeholder="HH:MM"/>
+                                <input type="time" class="form-control" id="am"/>
+                                <input type="time" class="form-control" id="pm"/>
+                                <button type="button" class="btn btn-outline-primary" onclick="setTime()">Save</button>
                                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                               </div>
                               <div class="input-group">
-                                <button type="button" class="btn btn-outline-primary" onclick="#">Save</button>
-                                <input type="text" class="form-control" placeholder="HH:MM"/>
+                                <button type="button" class="btn btn-outline-primary" onclick="mypetfeed()">수동 밥주기</button>
+                                <button type="button" class="btn btn-outline-primary" onclick="mypetwater()">수동 물주기</button>
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                </div>
+                              <div class="input-group">
+                                <text class="form-control" >현재물높이</text>
+                                <text class="form-control" id="waterlevel"></text>
                                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                               </div>
                             </div>
