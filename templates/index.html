@@ -52,11 +52,75 @@
     <script src="https://cdn.jsdelivr.net/gh/alpine-collective/alpine-magic-helpers@0.5.x/dist/component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
     <script type="text/javascript" src="{% static 'js/clock.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/btncctvonoff.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/btncctvonoff.js' %}">
+    </script>
+    <script type="text/javascript" src="{% static 'js/mypet.js' %}">
+    </script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js"
+            type = "text/javascript"> </script>
+
+    <script type="text/javascript">
+    var host = "172.30.1.56"
+    var port = 9001
+    var mqtt;
+    var distance = 0;
+    function onConnect(){
+        console.log("연결완료");
+        mqtt.subscribe("iot/#");
+        mqtt.subscribe("mypet/waterlevel");
+    }
+
+    function onMessageArrived(msg){
+        topic = msg.destinationName.split('/')
+        if(topic[1] == "mycamera"){
+          document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
+        }else if (topic[1] == "dis"){
+          distance = parseInt(msg.payloadString);
+          if (distance <= 40){
+                alert("보안장치를 먼저 해제해 주세요")
+          }
+        }else if (topic[1] == "waterlevel"){
+          out_msg = msg.payloadString+"cm";
+          content = document.getElementById("waterlevel");
+          content.innerHTML = out_msg;
+
+        }else if (topic[1] == "sound"){
+          alert("큰 소리가 감지되었습니다.");
+        }
+    }
+    function onFailure(){
+        console.log("연결실패");
+        setTimeout(MQTTConnect,reconnectTimeout);
+    }
+    function sendMsg(topic, msg){
+      message = new Paho.MQTT.Message(msg);
+      message.destinationName = topic
+      mqtt.send(message);
+    }
+    function MQTTConnect(){
+        mqtt = new Paho.MQTT.Client(host,port,"streaming");
+        var options = {
+            timeout:3,
+            onSuccess : onConnect,
+            onFailure : onFailure,
+        }
+        mqtt.onMessageArrived = onMessageArrived;
+        mqtt.connect(options);
+    }
+
+    function setTime(){
+      setAm = document.getElementById("am").value;
+      setPm = document.getElementById("pm").value;
+      sendMsg("mypet/setTime", setAm+"/"+setPm)
+    }
+
+    </script>
+
   </head>
 
-  <body onload="printClock()"> <!-- body 로딩 될때 printClock() 출력 -->
+  <body onload="printClock(); cctvinit();"> <!-- body 로딩 될때 printClock() 출력 -->
     <!-- Layout wrapper -->
+
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <!-- Menu -->
@@ -145,10 +209,10 @@
                       <div class="col-sm-7">
                         <div class="card-body">
                           <h5 class="card-title text-primary">Home CCTV <img src="{% static 'img/icons8-cctv-32.png' %}"/></h5>
-                          <img src="#" id="myimg" width="135%" height="400"/><br><br>
+                          <img src="{% static 'img/cctvwait.png' %}" id="myimg" width="100%" height="100%"/><br><br>
                           <!-- 버튼을 누르면 cctv on / off -->
                           <div style="display:flex">
-                            <input class="btn btn-sm btn-outline-primary" type="button" id="cctv" value="CCTV Off" onclick="CctvOnOff()">
+                            <input class="btn btn-sm btn-outline-primary" type="button" id="cctv" value="CCTV On" onclick="CctvOnOff()">
                             <div style="margin-left:150px; width:100%; height:15px; color:#666; font-size:20px; text-align:center;" id="clock">
                             </div>
                           </div>
@@ -226,19 +290,22 @@
                             </div>
                             <div class="dropdown">
                               <div class="d-flex">
-                                <span class="fw-semibold d-block mb-1">반려동물 밥 시간 &nbsp&nbsp</span>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" checked />
-                                </div>
+                                <span class="fw-semibold d-block mb-1">반려동물&nbsp&nbsp</span><span id="mypet"/>
                               </div>
                               <div class="input-group">
-                                <button type="button" class="btn btn-outline-primary" onclick="#">Save</button>
-                                <input type="text" class="form-control" placeholder="HH:MM"/>
+                                <input type="time" class="form-control" id="am"/>
+                                <input type="time" class="form-control" id="pm"/>
+                                <button type="button" class="btn btn-outline-primary" onclick="setTime()">Save</button>
                                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                               </div>
                               <div class="input-group">
-                                <button type="button" class="btn btn-outline-primary" onclick="#">Save</button>
-                                <input type="text" class="form-control" placeholder="HH:MM"/>
+                                <button type="button" class="btn btn-outline-primary" onclick="mypetfeed()">수동 밥주기</button>
+                                <button type="button" class="btn btn-outline-primary" onclick="mypetwater()">수동 물주기</button>
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                </div>
+                              <div class="input-group">
+                                <text class="form-control" >현재물높이</text>
+                                <text class="form-control" id="waterlevel"></text>
                                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                               </div>
                             </div>
@@ -311,5 +378,9 @@
       </div>
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
+  <script type="text/javascript">
+      MQTTConnect()
+
+  </script>
   </body>
 </html>
