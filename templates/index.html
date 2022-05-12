@@ -63,48 +63,48 @@
     <script src="{% static 'js/rfid_alert.js' %}"></script>
     <script src="https://code.jquery.com/jquery-latest.js"></script>
 
-    <script type="text/javascript">
-        var host = "192.168.219.102";
-        var distance = 0;
-        var port = 9001;
-        var mqtt;
+<!--    <script type="text/javascript">-->
+<!--        var host = "192.168.219.102";-->
+<!--        var distance = 0;-->
+<!--        var port = 9001;-->
+<!--        var mqtt;-->
 
-        function onConnect(){
-            console.log("접속완료");
-            mqtt.subscribe("iot/servo");
-        }
-        // callback함수 - 접속 실패하면 호출되는 함수
-        function onFailure(){
-            console.log("접속실패");
-            setTimeout(MQTTConnect,reconnectTimeout);
-        }
-        function onMessageArrived(msg){
-            topic = msg.destinationName.split('/')
-            if(topic[1] == "mycamera"){
-              document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
-            }else if (topic[1] == "dis"){
-              distance = parseInt(msg.payloadString);
-              if (distance <= 40){
-                    alert("보안장치를 먼저 해제해 주세요")
-              }
-            }
-        }
-        function sendMsg(msg){
-          message = new Paho.MQTT.Message(msg);
-          message.destinationName = "iot/led"
-          mqtt.send(message);
-        }
-        function MQTTConnect(){
-            mqtt = new Paho.MQTT.Client(host,port,"streaming");
-            var options = {
-                timeout:3,
-                onSuccess:onConnect,
-                onFailure:onFailure,
-            }
-            mqtt.onMessageArrived = onMessageArrived;
-            mqtt.connect(options);
-        }
-    </script>
+<!--        function onConnect(){-->
+<!--            console.log("접속완료");-->
+<!--            mqtt.subscribe("iot/servo");-->
+<!--        }-->
+<!--        // callback함수 - 접속 실패하면 호출되는 함수-->
+<!--        function onFailure(){-->
+<!--            console.log("접속실패");-->
+<!--            setTimeout(MQTTConnect,reconnectTimeout);-->
+<!--        }-->
+<!--        function onMessageArrived(msg){-->
+<!--            topic = msg.destinationName.split('/')-->
+<!--            if(topic[1] == "mycamera"){-->
+<!--              document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))-->
+<!--            }else if (topic[1] == "dis"){-->
+<!--              distance = parseInt(msg.payloadString);-->
+<!--              if (distance <= 40){-->
+<!--                    alert("보안장치를 먼저 해제해 주세요")-->
+<!--              }-->
+<!--            }-->
+<!--        }-->
+<!--        function sendMsg(msg){-->
+<!--          message = new Paho.MQTT.Message(msg);-->
+<!--          message.destinationName = "iot/led"-->
+<!--          mqtt.send(message);-->
+<!--        }-->
+<!--        function MQTTConnect(){-->
+<!--            mqtt = new Paho.MQTT.Client(host,port,"streaming");-->
+<!--            var options = {-->
+<!--                timeout:3,-->
+<!--                onSuccess:onConnect,-->
+<!--                onFailure:onFailure,-->
+<!--            }-->
+<!--            mqtt.onMessageArrived = onMessageArrived;-->
+<!--            mqtt.connect(options);-->
+<!--        }-->
+<!--    </script>-->
 
     <script type="text/javascript">
     $(document).ready(function(){
@@ -375,10 +375,10 @@
                     </div>
                     <script type="text/javascript" src="{% static 'js/chart.js' %}">
                     </script>
-                    <script type="text/javascript">
-                        // 사용자 정의 함수를 호출해서 mqtt가 동작할 수 있도록 함
-                        MQTTConnect()
-                    </script>
+<!--                    <script type="text/javascript">-->
+<!--                        // 사용자 정의 함수를 호출해서 mqtt가 동작할 수 있도록 함-->
+<!--                        MQTTConnect()-->
+<!--                    </script>-->
                   </div>
                 </div>
               </div>

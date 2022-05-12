@@ -53,11 +53,11 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   },
                                   smooth: true, //부드러운 line 표현
                                   yAxisIndex: 0, //yAxis 0번째 사용
-                                  data: (function data_temp(temp){
+                                  data: (function(){
                                     var res = [];
                                     var len = 0;
                                     while (len < 20) {
-                                      res.push(temp); //처음 온도 데이터 표시
+                                      res.push((Math.random()*60 + 5).toFixed(1) - 0); //처음 온도 데이터 표시
                                       len++;
                                     }
                                     return res;
@@ -117,11 +117,11 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   },
                                   smooth: true, //부드러운 line 표현
                                   yAxisIndex: 0, //yAxis 0번째 사용
-                                  data: (function data_humid(humid){
+                                  data: (function(){
                                     var res = [];
                                     var len = 0;
                                     while (len < 20) {
-                                      res.push(humid); //처음 습도 데이터 표시
+                                      res.push((Math.random()*60 + 5).toFixed(1) - 0); //처음 습도 데이터 표시
                                       len++;
                                     }
                                     return res;
