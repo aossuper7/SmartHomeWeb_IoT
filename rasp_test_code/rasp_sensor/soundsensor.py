@@ -13,13 +13,10 @@ class mySound(Thread):
         while True:
             if gpio.input(self.sound) == 1 :
                 print("큰 소리가 감지됨", self.count)
-                pub.single("iot/sound", "alert", hostname="172.30.1.51")
+                pub.single("iot/sound", "alert", hostname="172.30.1.56")
             else:
                 print(gpio.input(self.sound), self.count)
 
             
             time.sleep(2)
-            
-if __name__=="__main__":
-    mysound = mySound()
-    mysound.start()
+
