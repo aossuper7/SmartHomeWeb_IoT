@@ -37,7 +37,7 @@ class MyView(View):
         jsonTemp = FileRead("temp.json")
         data = {'jsonHumid': jsonHumid, 'jsonTemp': jsonTemp}
         print(data)
-        return render(request, 'index.html', data)
+        return render(request, 'index.html', {'dht' : data})
 
     @request_mapping("/dataset", method="get")
     def dataset(self, request):
