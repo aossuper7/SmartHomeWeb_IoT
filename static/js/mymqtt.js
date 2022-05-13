@@ -27,11 +27,14 @@ function onMessageArrived(msg) {
             data:{"humid":humid,
                   "temp":temp}
         })
-    }else if(message[1] == "dhtget") {
-        lastdht = msg.payloadString.replace(/[{|}|'| ]/g,"");
-        dhtdata = lastdht.split(/[:|,]/g);
-
+    }else if(message[1] == "pir") {
+        for(let i=0; i<5; i++)
+            pushNotify("error","출입 알림","침입 발생 112에 신고하세요!");
     }
+//    else if(message[1] == "dhtget") {
+//        lastdht = msg.payloadString.replace(/[{|}|'| ]/g,"");
+//        dhtdata = lastdht.split(/[:|,]/g);
+//        console.log(dhtdata);
 }
 function sendMsg(msg) {
     message = new Paho.MQTT.Message(msg);

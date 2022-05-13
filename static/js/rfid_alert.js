@@ -17,3 +17,4 @@ function pushNotify(status, title, text) {
         position: 'right bottom'
     })
 }
+//https://github.com/simple-notify/simple-notify
