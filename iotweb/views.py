@@ -40,6 +40,14 @@ class MyView(View):
         data = {'jsonHumid': jsonHumid, 'jsonTemp': jsonTemp}
         return render(request, 'index.html', {'dht' : data})
 
+    @request_mapping("loginok/", method="get")
+    def index(self, request):
+        return render(request, 'index.html')
+
+    @request_mapping("/cctv", method="get")
+    def cctv(self, request):
+        return render(request, 'cctv.html')
+      
     @request_mapping("/dataset", method="get")
     def dataset(self, request):
         humid = request.GET.get('humid')
@@ -49,6 +57,7 @@ class MyView(View):
         FileSet("humid.json", humidSetData, humid)
         FileSet("temp.json", tempSetData, temp)
         return JsonResponse({"result": 1})
+
 
     @request_mapping("/", method="get")
     def login(self, request):

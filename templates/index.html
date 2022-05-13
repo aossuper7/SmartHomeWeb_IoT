@@ -65,6 +65,56 @@
     <script src="{% static 'js/rfid_alert.js' %}"></script>
     <script src="https://code.jquery.com/jquery-latest.js"></script>
 
+
+    <script type="text/javascript">
+    var host = "192.168.0.24"
+    var port = 9001
+    var mqtt;
+    var distance = 0;
+    function onConnect(){
+        console.log("연결완료")
+        mqtt.subscribe("iot/#")
+    }
+
+    function onMessageArrived(msg){
+        topic = msg.destinationName.split('/')
+        if(topic[1] == "mycamera"){
+          document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
+        }else if (topic[1] == "dis"){
+          distance = parseInt(msg.payloadString);
+          if (distance <= 40){
+                alert("보안장치를 먼저 해제해 주세요")
+          }
+        }else if (topic[1] == "mypet"){
+          out_msg = "메시지 전달:"+msg.payloadString;
+          content = document.getElementById("mypet");
+          content.innerHTML = out_msg;
+        }else if (topic[1] == "sound"){
+          alert("큰 소리가 감지되었습니다.");
+        }
+    }
+    function onFailure(){
+        console.log("연결실패");
+        setTimeout(MQTTConnect,reconnectTimeout);
+    }
+    function sendMsg(msg){
+      message = new Paho.MQTT.Message(msg);
+      message.destinationName = "camerachk"
+      mqtt.send(message);
+    }
+    function MQTTConnect(){
+        mqtt = new Paho.MQTT.Client(host,port,"streaming");
+        var options = {
+            timeout:3,
+            onSuccess : onConnect,
+            onFailure : onFailure,
+        }
+        mqtt.onMessageArrived = onMessageArrived;
+        mqtt.connect(options);
+    }
+
+    </script>
+
 <!--    <script type="text/javascript">-->
 <!--        var host = "192.168.219.102";-->
 <!--        var distance = 0;-->
@@ -120,6 +170,7 @@
 <!--          sendMsg("mypet/setTime", setAm+"/"+setPm)-->
 <!--        }-->
 <!--    </script>-->
+
 
     <script type="text/javascript">
     $(document).ready(function(){
@@ -414,5 +465,10 @@
       </div>
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
+  <script type="text/javascript">
+      MQTTConnect()
+
+  </script>
+
   </body>
 </html>
