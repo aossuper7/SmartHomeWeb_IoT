@@ -3,10 +3,12 @@ var port = 9001;
 var mqtt;
 var temp;
 var humid;
+var lastdht;
 
 function onConnect() {
     console.log("접속 성공");
     mqtt.subscribe("android/#");
+    sendMsg('dhtget');
 }
 function onFailure() {
     console.log("접속 실패");
@@ -25,11 +27,15 @@ function onMessageArrived(msg) {
             data:{"humid":humid,
                   "temp":temp}
         })
+    }else if(message[1] == "dhtget") {
+        lastdht = msg.payloadString.replace(/[{|}|'| ]/g,"");
+        dhtdata = lastdht.split(/[:|,]/g);
+
     }
 }
 function sendMsg(msg) {
     message = new Paho.MQTT.Message(msg);
-    message.destinationName = "pi/dht";
+    message.destinationName = "pi/dhtget";
     mqtt.send(message);
 }
 function MQTTConnect() {

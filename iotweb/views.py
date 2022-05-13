@@ -18,12 +18,14 @@ def FileSet(name, dic, data):
     dic[current_time] = data
     with open(name, "w") as f:
         json.dump(dic, f)
+    f.close()
 
 def FileRead(name):
     try:
         with open(name, "r") as f:
             return json.load(f)
     except:
+        print("파일없음")
         f = open(name, "w")
     finally:
         f.close()
@@ -36,13 +38,14 @@ class MyView(View):
         jsonHumid = FileRead("humid.json")
         jsonTemp = FileRead("temp.json")
         data = {'jsonHumid': jsonHumid, 'jsonTemp': jsonTemp}
-        print(data)
         return render(request, 'index.html', {'dht' : data})
 
     @request_mapping("/dataset", method="get")
     def dataset(self, request):
         humid = request.GET.get('humid')
         temp = request.GET.get('temp')
+        humidSetData = FileRead("humid.json")
+        tempSetData = FileRead("temp.json")
         FileSet("humid.json", humidSetData, humid)
         FileSet("temp.json", tempSetData, temp)
         return JsonResponse({"result": 1})

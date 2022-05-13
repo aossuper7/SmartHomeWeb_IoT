@@ -65,61 +65,61 @@
     <script src="{% static 'js/rfid_alert.js' %}"></script>
     <script src="https://code.jquery.com/jquery-latest.js"></script>
 
-    <script type="text/javascript">
-        var host = "192.168.219.102";
-        var distance = 0;
-        var port = 9001;
-        var mqtt;
+<!--    <script type="text/javascript">-->
+<!--        var host = "192.168.219.102";-->
+<!--        var distance = 0;-->
+<!--        var port = 9001;-->
+<!--        var mqtt;-->
 
-        function onConnect(){
-            console.log("접속완료");
-            mqtt.subscribe("iot/servo");
-            mqtt.subscribe("mypet/waterlevel");
-        }
-        // callback함수 - 접속 실패하면 호출되는 함수
-        function onFailure(){
-            console.log("접속실패");
-            setTimeout(MQTTConnect,reconnectTimeout);
-        }
-        function onMessageArrived(msg){
-          topic = msg.destinationName.split('/')
-          if(topic[1] == "mycamera"){
-            document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
-          }else if (topic[1] == "dis"){
-            distance = parseInt(msg.payloadString);
-            if (distance <= 40){
-                  alert("보안장치를 먼저 해제해 주세요")
-            }
-          }else if (topic[1] == "waterlevel"){
-            out_msg = msg.payloadString+"cm";
-            content = document.getElementById("waterlevel");
-            content.innerHTML = out_msg;
+<!--        function onConnect(){-->
+<!--            console.log("접속완료");-->
+<!--            mqtt.subscribe("iot/servo");-->
+<!--            mqtt.subscribe("mypet/waterlevel");-->
+<!--        }-->
+<!--        // callback함수 - 접속 실패하면 호출되는 함수-->
+<!--        function onFailure(){-->
+<!--            console.log("접속실패");-->
+<!--            setTimeout(MQTTConnect,reconnectTimeout);-->
+<!--        }-->
+<!--        function onMessageArrived(msg){-->
+<!--          topic = msg.destinationName.split('/')-->
+<!--          if(topic[1] == "mycamera"){-->
+<!--            document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))-->
+<!--          }else if (topic[1] == "dis"){-->
+<!--            distance = parseInt(msg.payloadString);-->
+<!--            if (distance <= 40){-->
+<!--                  alert("보안장치를 먼저 해제해 주세요")-->
+<!--            }-->
+<!--          }else if (topic[1] == "waterlevel"){-->
+<!--            out_msg = msg.payloadString+"cm";-->
+<!--            content = document.getElementById("waterlevel");-->
+<!--            content.innerHTML = out_msg;-->
 
-          }else if (topic[1] == "sound"){
-            alert("큰 소리가 감지되었습니다.");
-          }
-        }
-        function sendMsg(topic, msg){
-          message = new Paho.MQTT.Message(msg);
-          message.destinationName = topic
-          mqtt.send(message);
-        }
-        function MQTTConnect(){
-            mqtt = new Paho.MQTT.Client(host,port,"streaming");
-            var options = {
-                timeout:3,
-                onSuccess:onConnect,
-                onFailure:onFailure,
-            }
-            mqtt.onMessageArrived = onMessageArrived;
-            mqtt.connect(options);
-        }
-        function setTime(){
-          setAm = document.getElementById("am").value;
-          setPm = document.getElementById("pm").value;
-          sendMsg("mypet/setTime", setAm+"/"+setPm)
-        }
-    </script>
+<!--          }else if (topic[1] == "sound"){-->
+<!--            alert("큰 소리가 감지되었습니다.");-->
+<!--          }-->
+<!--        }-->
+<!--        function sendMsg(topic, msg){-->
+<!--          message = new Paho.MQTT.Message(msg);-->
+<!--          message.destinationName = topic-->
+<!--          mqtt.send(message);-->
+<!--        }-->
+<!--        function MQTTConnect(){-->
+<!--            mqtt = new Paho.MQTT.Client(host,port,"streaming");-->
+<!--            var options = {-->
+<!--                timeout:3,-->
+<!--                onSuccess:onConnect,-->
+<!--                onFailure:onFailure,-->
+<!--            }-->
+<!--            mqtt.onMessageArrived = onMessageArrived;-->
+<!--            mqtt.connect(options);-->
+<!--        }-->
+<!--        function setTime(){-->
+<!--          setAm = document.getElementById("am").value;-->
+<!--          setPm = document.getElementById("pm").value;-->
+<!--          sendMsg("mypet/setTime", setAm+"/"+setPm)-->
+<!--        }-->
+<!--    </script>-->
 
     <script type="text/javascript">
     $(document).ready(function(){
@@ -391,240 +391,14 @@
                         </div>
                       </div>
                     </div>
+
                     <script type="text/javascript">
                     var dht_humid = JSON.stringify('{{dht.jsonHumid}}').replace(/&#x27;|[|\"|{|}| ]/g,"");
                     var dht_humid = dht_humid.split(/:|,/g);
                     var dht_temp = JSON.stringify('{{dht.jsonTemp}}').replace(/&#x27;|[|\"|{|}| ]/g,"");
                     var dht_temp = dht_temp.split(/:|,/g);
-
-                      var myChart1 = echarts.init(document.getElementById('chart1'));
-                            var myChart2 = echarts.init(document.getElementById('chart2'));
-                            var myChart3 = echarts.init(document.getElementById('chart3'));
-                            //chart의 설정
-                            var option1 = {
-                              tooltip: {
-                                trigger: 'axis',
-                                axisPointer: {
-                                  type: 'cross',
-                                  label: {
-                                    backgroundColor: '#283b56'
-                                  }
-                                }
-                              },
-                              dataZoom: {
-                                show: false,
-                                start: 0,
-                                end: 100
-                              },
-                              xAxis: [
-                                {
-                                  type: 'category',
-                                  boundaryGap: true,
-                                  data: (function (){
-                                    var now = new Date();
-                                    var res = [];
-                                    for(let i =0; i<dht_temp.length; i+=2) {
-                                      res.unshift(dht_temp[i].replace(/\//g,":"));
-                                      now = new Date(dht_temp[i]);
-                                    }
-                                    return res;
-                                  })()
-                                },
-                              ],
-                              yAxis: [
-                                {
-                                  type: 'value',
-                                  scale: true,
-                                  name: '온도',
-                                  max: 50,
-                                  min: 0,
-                                  boundaryGap: [0.2, 0.2],
-                                },
-
-                              ],
-                              series: [
-                                {
-                                  name: '온도',
-                                  type: 'bar',
-                                  lineStyle:{
-                                    color:'#2A265C' //line차트 색상 변경
-                                  },
-                                  smooth: true, //부드러운 line 표현
-                                  yAxisIndex: 0, //yAxis 0번째 사용
-                                  data: (function(){
-                                    var res = [];
-                                    for(let i=0; i<dht_temp.length; i+=2) {
-                                      res.push(dht_temp[i+1]);
-                                    }
-                                    return res;
-                                  })()
-                                },
-                              ]
-                            };
-
-                            var option2 = {
-                              tooltip: {
-                                trigger: 'axis',
-                                axisPointer: {
-                                  type: 'cross',
-                                  label: {
-                                    backgroundColor: '#283b56'
-                                  }
-                                }
-                              },
-                              dataZoom: {
-                                show: false,
-                                start: 0,
-                                end: 100
-                              },
-                              xAxis: [
-                                {
-                                  type: 'category',
-                                  boundaryGap: true,
-                                  data: (function (){
-                                    var now = new Date();
-                                    var res = [];
-                                    for (let i=0; i<dht_humid.length; i+=2) {
-                                      res.unshift(dht_humid[i].replace(/\//g,":"));
-                                      now = new Date(dht_humid[i]);
-                                    }
-                                    return res;
-                                  })()
-                                },
-                              ],
-                              yAxis: [
-                                {
-                                  type: 'value',
-                                  scale: true,
-                                  name: '습도',
-                                  max: 100,
-                                  min: 0,
-                                  boundaryGap: [0.2, 0.2],
-                                },
-
-                              ],
-                              series: [
-                                {
-                                  name: '습도',
-                                  type: 'bar',
-                                  lineStyle:{
-                                    color:'#2A265C' //line차트 색상 변경
-                                  },
-                                  smooth: true, //부드러운 line 표현
-                                  yAxisIndex: 0, //yAxis 0번째 사용
-                                  data: (function(){
-                                    var res = [];
-                                    for(let i=0; i<dht_humid.length; i+=2) {
-                                      res.push(dht_humid[i+1]);
-                                    }
-                                    return res;
-                                  })()
-                                },
-                              ]
-                            };
-
-                            var option3 = {
-                              tooltip: {
-                                trigger: 'axis',
-                                axisPointer: {
-                                  type: 'cross',
-                                  label: {
-                                    backgroundColor: '#283b56'
-                                  }
-                                }
-                              },
-                              dataZoom: {
-                                show: false,
-                                start: 0,
-                                end: 100
-                              },
-                              xAxis: [
-                                {
-                                  type: 'category',
-                                  boundaryGap: true,
-                                  data: (function (){
-                                    var now = new Date();
-                                    var res = [];
-                                    var len = 20;
-                                    while (len--) {
-                                      res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-                                      now = new Date(now - 2000);
-                                    }
-                                    return res;
-                                  })()
-                                },
-                              ],
-                              yAxis: [
-                                {
-                                  type: 'value',
-                                  scale: true,
-                                  name: '미세먼지',
-                                  max: 300,
-                                  min: 0,
-                                  boundaryGap: [0.2, 0.2],
-                                },
-
-                              ],
-                              series: [
-                                {
-                                  name: '미세먼지',
-                                  type: 'bar',
-                                  lineStyle:{
-                                    color:'#2A265C' //line차트 색상 변경
-                                  },
-                                  smooth: true, //부드러운 line 표현
-                                  yAxisIndex: 0, //yAxis 0번째 사용
-                                  data: (function (){
-                                    var res = [];
-                                    var len = 0;
-                                    while (len < 20) {
-                                      res.push((Math.random()*60 + 5).toFixed(1) - 0); //미세먼지 수치를 넣어야됨
-                                      len++;
-                                    }
-                                    return res;
-                                  })()
-                                },
-                              ]
-                            };
-
-                            // 위에서 설정한 속성을 차트에 반영합니다.
-                            myChart1.setOption(option1);
-                            myChart2.setOption(option2);
-                            myChart3.setOption(option3);
-
-                            //데이터를 생성하고 삭제합니다.
-                            setInterval(function (){
-                                //x축에 실시간 데이터 생성
-                                var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
-
-                                var data0 = option1.series[0].data; //온도 데이터
-                                var data1 = option2.series[0].data; //습도 데이터
-                                var data2 = option3.series[0].data; //미세먼지 데이터
-
-                                //데이터의 가장 왼쪽 값을 제거
-                                data0.shift();
-                                data1.shift();
-                                data2.shift();
-                                //데이터의 가장 오른쪽 값을 추가
-                                data0.push(temp);
-                                data1.push(humid);
-                                data2.push((Math.random() * 300).toFixed(1) - 0);
-
-
-                                //x축에 시간 데이터 추가
-                                option1.xAxis[0].data.shift();
-                                option1.xAxis[0].data.push(axisData);
-                                option2.xAxis[0].data.shift();
-                                option2.xAxis[0].data.push(axisData);
-                                option3.xAxis[0].data.shift();
-                                option3.xAxis[0].data.push(axisData);
-
-                                //차트에 반영
-                                myChart1.setOption(option1);
-                                myChart2.setOption(option2);
-                                myChart3.setOption(option3);
-                            }, 10000);
                     </script>
+                    <script src="{% static 'js/chart.js' %}"></script>
                     </script>
 <!--                    <script type="text/javascript">-->
 <!--                        // 사용자 정의 함수를 호출해서 mqtt가 동작할 수 있도록 함-->
