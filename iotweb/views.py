@@ -12,6 +12,14 @@ class MyView(View):
     def home(self, request):
         return render(request, 'login.html')
 
+    @request_mapping("loginok/", method="get")
+    def index(self, request):
+        return render(request, 'index.html')
+
+    @request_mapping("/cctv", method="get")
+    def cctv(self, request):
+        return render(request, 'cctv.html')
+
     @request_mapping("/forgot-password", method="get")
     def forgot_password(self, request):
         return render(request, 'forgot-password.html')
