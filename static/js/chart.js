@@ -24,10 +24,9 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   data: (function (){
                                     var now = new Date();
                                     var res = [];
-                                    var len = 20;
-                                    while (len--) {
-                                      res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-                                      now = new Date(now - 2000);
+                                    for(let i =0; i<dht_temp.length; i+=2) {
+                                      res.unshift(dht_temp[i].replace(/\//g,":"));
+                                      now = new Date(dht_temp[i]);
                                     }
                                     return res;
                                   })()
@@ -53,12 +52,10 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   },
                                   smooth: true, //부드러운 line 표현
                                   yAxisIndex: 0, //yAxis 0번째 사용
-                                  data: (function data_temp(temp){
+                                  data: (function(){
                                     var res = [];
-                                    var len = 0;
-                                    while (len < 20) {
-                                      res.push(temp); //처음 온도 데이터 표시
-                                      len++;
+                                    for(let i=0; i<dht_temp.length; i+=2) {
+                                      res.push(dht_temp[i+1]);
                                     }
                                     return res;
                                   })()
@@ -88,10 +85,9 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   data: (function (){
                                     var now = new Date();
                                     var res = [];
-                                    var len = 20;
-                                    while (len--) {
-                                      res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-                                      now = new Date(now - 2000);
+                                    for (let i=0; i<dht_humid.length; i+=2) {
+                                      res.unshift(dht_humid[i].replace(/\//g,":"));
+                                      now = new Date(dht_humid[i]);
                                     }
                                     return res;
                                   })()
@@ -117,12 +113,10 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   },
                                   smooth: true, //부드러운 line 표현
                                   yAxisIndex: 0, //yAxis 0번째 사용
-                                  data: (function data_humid(humid){
+                                  data: (function(){
                                     var res = [];
-                                    var len = 0;
-                                    while (len < 20) {
-                                      res.push(humid); //처음 습도 데이터 표시
-                                      len++;
+                                    for(let i=0; i<dht_humid.length; i+=2) {
+                                      res.push(dht_humid[i+1]);
                                     }
                                     return res;
                                   })()
@@ -200,7 +194,7 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                             myChart3.setOption(option3);
 
                             //데이터를 생성하고 삭제합니다.
-                            setInterval(function (){
+                            setInterval(function setdata(value, time){
                                 //x축에 실시간 데이터 생성
                                 var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
 
