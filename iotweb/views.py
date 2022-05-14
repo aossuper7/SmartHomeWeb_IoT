@@ -125,5 +125,10 @@ class MyView(View):
             else:
                 return JsonResponse("fail", safe=False, json_dumps_params={'ensure_ascii': False})
 
-
+    @request_mapping("/androidlogout", method="get")
+    def androidlogout(self,request):
+        if request.method == 'get':
+            print("request_ok")
+            del request.session['sessionid']
+            return render(request, "login.html")
 
