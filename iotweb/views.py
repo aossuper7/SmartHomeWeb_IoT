@@ -74,7 +74,7 @@ class MyView(View):
             user = User.objects.get(user_id = user_id)
             if user.user_pwd == user_pwd:
                 request.session['sessionid'] = user.user_id
-                request.session['sessionname'] = user.user_pwd
+
                 return redirect('/home')
             else:
                 return render(request, 'loginfail.html')
@@ -93,7 +93,6 @@ class MyView(View):
                 return JsonResponse("fail", safe=False, json_dumps_params={'ensure_ascii': False})
             if data["user_pwd"] == obj.user_pwd:
                 request.session['sessionid'] = obj.user_id;
-                request.session['sessionname'] = obj.user_name;
                 return JsonResponse("ok", safe=False, json_dumps_params={'ensure_ascii': False})
             else:
                 return JsonResponse("fail", safe=False, json_dumps_params={'ensure_ascii': False})
