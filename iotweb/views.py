@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django_request_mapping import request_mapping
 from django.http import JsonResponse
@@ -40,10 +40,6 @@ class MyView(View):
         data = {'jsonHumid': jsonHumid, 'jsonTemp': jsonTemp}
         return render(request, 'index.html', {'dht' : data})
 
-    @request_mapping("loginok/", method="get")
-    def index(self, request):
-        return render(request, 'index.html')
-
     @request_mapping("/cctv", method="get")
     def cctv(self, request):
         return render(request, 'cctv.html')
@@ -63,8 +59,30 @@ class MyView(View):
     def login(self, request):
         return render(request, 'login.html')
 
+    @request_mapping("/logout", method="get")
+    def logout(self, request):
+        if request.session['sessionid'] != None:
+            del request.session['sessionid']
+        return render(request, 'login.html')
+
+    @request_mapping("/loginchk",method="post")
+    def loginimpl(self, request):
+        print(request.POST['email-username'])
+        user_id = request.POST['email-username']
+        user_pwd = request.POST['password']
+        try:
+            user = User.objects.get(user_id = user_id)
+            if user.user_pwd == user_pwd:
+                request.session['sessionid'] = user.user_id
+
+                return redirect('/home')
+            else:
+                return render(request, 'loginfail.html')
+        except:
+            return render(request, 'loginfail.html')
+
     @request_mapping("/login", method="post")
-    def login(self, request):
+    def androidlogin(self, request):
         if request.method == 'POST':
             print("request_ok")
             data = JSONParser().parse(request)
@@ -74,6 +92,7 @@ class MyView(View):
             if obj.user_id != user_id:
                 return JsonResponse("fail", safe=False, json_dumps_params={'ensure_ascii': False})
             if data["user_pwd"] == obj.user_pwd:
+                request.session['sessionid'] = obj.user_id;
                 return JsonResponse("ok", safe=False, json_dumps_params={'ensure_ascii': False})
             else:
                 return JsonResponse("fail", safe=False, json_dumps_params={'ensure_ascii': False})
