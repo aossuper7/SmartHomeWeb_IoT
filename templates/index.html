@@ -176,18 +176,18 @@
     $(document).ready(function(){
         $("#led_ck").change(function(){
             if($("#led_ck").is(":checked")){
-                sendMsg('led_on');
+                sendMsg('iot/led', 'led_on');
             }else{
-                sendMsg('led_off');
+                sendMsg('iot/led','led_off');
             }
         });
     });
     $(document).ready(function(){
         $("#servo_curtain").change(function(){
             if($("#servo_curtain").is(":checked")){
-                sendMsg('servo_open');
+                sendMsg('iot/led','servo_open');
             }else{
-                sendMsg('servo_close');
+                sendMsg('iot/led','servo_close');
             }
         });
     });
