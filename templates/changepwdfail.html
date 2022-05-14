@@ -117,46 +117,8 @@
                 </a>
               </div>
               <!-- /Logo -->
-              {% if request.session.sessionid == None %}
-              <h4 class="mb-2">Welcome to Home! 👋</h4>
-
-              <form id="formAuthentication" class="mb-3" action="/loginchk" method="POST">
-                <div class="mb-3">
-                  <label for="Username" class="form-label">Username</label>
-                  <input type="text" class="form-control" id="Username" name="username" placeholder="Enter your username" autofocus/>
-                </div>
-                <div class="mb-3 form-password-toggle">
-                  <div class="d-flex justify-content-between">
-                    <label class="form-label" for="password">Password</label>
-
-                  </div>
-                  <div class="input-group input-group-merge">
-                    <input
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      name="password"
-                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                      aria-describedby="password"
-                    />
-                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                  </div>
-                </div>
-<!--                <div class="mb-3">-->
-<!--                  <div class="form-check">-->
-<!--                    <input class="form-check-input" type="checkbox" id="remember-me" />-->
-<!--                    <label class="form-check-label" for="remember-me"> Remember Me </label>-->
-<!--                  </div>-->
-<!--                </div>-->
-                <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
-                </div>
-              </form>
-              {% else %}
-              <h4 class="d-flex justify-content-center">Welcome to Home! 👋</h4>
-              <div class="d-flex  justify-content-center">안녕하세요 {{request.session.sessionid}}님</div>
-              <a class="d-flex  justify-content-center" href="/home">홈으로 가기</a>
-              {% endif %}
+              <div class="d-flex  justify-content-center">비밀번호를 확인해 주세요</div>
+              <a class="d-flex  justify-content-center" href="/pwdchk">이전으로 가기</a>
             </div>
           </div>
           <!-- /Register -->

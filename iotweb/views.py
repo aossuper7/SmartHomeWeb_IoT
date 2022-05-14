@@ -67,8 +67,8 @@ class MyView(View):
 
     @request_mapping("/loginchk",method="post")
     def loginimpl(self, request):
-        print(request.POST['email-username'])
-        user_id = request.POST['email-username']
+        print(request.POST['username'])
+        user_id = request.POST['username']
         user_pwd = request.POST['password']
         try:
             user = User.objects.get(user_id = user_id)
@@ -80,6 +80,34 @@ class MyView(View):
                 return render(request, 'loginfail.html')
         except:
             return render(request, 'loginfail.html')
+
+    @request_mapping("/pwdchk", method="get")
+    def pwdchk(self,request):
+        return render(request,"pwdchk.html")
+
+    @request_mapping("/changepwd", method="post")
+    def changepwd(self, request):
+        user_pwd = request.POST['password']
+        user_id = request.session['sessionid']
+        user = User.objects.get(user_id = user_id)
+        if user.user_pwd == user_pwd:
+            return render(request, "changepwd.html")
+        else:
+            return render(request, "changepwdfail.html")
+
+    @request_mapping("/changepwdchk", method="post")
+    def changepwdchk(self, request):
+        change_pwd = request.POST['password']
+        change_pwd_chk = request.POST['passwordchk']
+        user_id = request.session['sessionid']
+        user = User.objects.get(user_id=user_id)
+        if change_pwd == change_pwd_chk:
+            user.user_pwd = change_pwd
+            user.save()
+            return render(request,"changepwdok.html")
+        else:
+            return render(request, "changepwdfail.html")
+
 
     @request_mapping("/login", method="post")
     def androidlogin(self, request):
