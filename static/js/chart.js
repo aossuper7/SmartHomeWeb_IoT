@@ -224,4 +224,4 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                 myChart1.setOption(option1);
                                 myChart2.setOption(option2);
                                 myChart3.setOption(option3);
-                            }, 10000);
+                            }, 5000);
