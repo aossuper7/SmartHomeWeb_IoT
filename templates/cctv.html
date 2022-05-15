@@ -75,17 +75,6 @@
         topic = msg.destinationName.split('/')
         if(topic[1] == "mycamera"){
           document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
-        }else if (topic[1] == "dis"){
-          distance = parseInt(msg.payloadString);
-          if (distance <= 40){
-                alert("보안장치를 먼저 해제해 주세요")
-          }
-        }else if (topic[1] == "mypet"){
-          out_msg = "메시지 전달:"+msg.payloadString;
-          content = document.getElementById("mypet");
-          content.innerHTML = out_msg;
-        }else if (topic[1] == "sound"){
-          alert("큰 소리가 감지되었습니다.");
         }
     }
     function onFailure(){
@@ -112,6 +101,15 @@
 
   </head>
 
+  {% if request.session.sessionid == None %}
+  <body>
+        <!-- /Logo -->
+        <h4 class="d-flex  justify-content-center">로그인 해 주세요</h4>
+        <a class ="d-flex  justify-content-center" href ="/">로그인 하러 가기</a>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+  </body>
+</html>
+{% else %}
 <body onload="printClock(); cctvinit();">
 <img src="{% static 'img/cctvwait.png' %}" id="myimg" width="100%" height="100%"/><br><br>
 <div style="display:flex">
@@ -123,4 +121,6 @@
       MQTTConnect()
 
   </script>
+
+{% endif %}
 </body>
