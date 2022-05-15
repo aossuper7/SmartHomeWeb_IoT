@@ -200,58 +200,8 @@
     <script src="{% static 'js/rfid_alert.js' %}"></script>
     <script src="https://code.jquery.com/jquery-latest.js"></script>
 
-
     <script type="text/javascript">
-    var host = "192.168.0.24"
-    var port = 9001
-    var mqtt;
-    var distance = 0;
-    function onConnect(){
-        console.log("연결완료")
-        mqtt.subscribe("iot/#")
-    }
-
-    function onMessageArrived(msg){
-        topic = msg.destinationName.split('/')
-        if(topic[1] == "mycamera"){
-          document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
-        }else if (topic[1] == "dis"){
-          distance = parseInt(msg.payloadString);
-          if (distance <= 40){
-                alert("보안장치를 먼저 해제해 주세요")
-          }
-        }else if (topic[1] == "mypet"){
-          out_msg = "메시지 전달:"+msg.payloadString;
-          content = document.getElementById("mypet");
-          content.innerHTML = out_msg;
-        }else if (topic[1] == "sound"){
-          alert("큰 소리가 감지되었습니다.");
-        }
-    }
-    function onFailure(){
-        console.log("연결실패");
-        setTimeout(MQTTConnect,reconnectTimeout);
-    }
-    function sendMsg(msg){
-      message = new Paho.MQTT.Message(msg);
-      message.destinationName = "camerachk"
-      mqtt.send(message);
-    }
-    function MQTTConnect(){
-        mqtt = new Paho.MQTT.Client(host,port,"streaming");
-        var options = {
-            timeout:3,
-            onSuccess : onConnect,
-            onFailure : onFailure,
-        }
-        mqtt.onMessageArrived = onMessageArrived;
-        mqtt.connect(options);
-    }
-
-    </script>
-
-    <script type="text/javascript">
-        var host = "192.168.219.102";
+        var host = "172.30.1.58";
         var distance = 0;
         var port = 9001;
         var mqtt;
@@ -260,6 +210,7 @@
             console.log("접속완료");
             mqtt.subscribe("iot/servo");
             mqtt.subscribe("mypet/waterlevel");
+            mqtt.subscribe("mypet/setTimeA");
         }
         // callback함수 - 접속 실패하면 호출되는 함수
         function onFailure(){
@@ -282,6 +233,10 @@
 
           }else if (topic[1] == "sound"){
             alert("큰 소리가 감지되었습니다.");
+          }else if (topic[1] == "setTimeA"){
+            out_msg = msg.payloadString;
+            content = document.getElementById("feedtimesettings");
+            content.innerHTML = out_msg;
           }
         }
         function sendMsg(topic, msg){
@@ -303,6 +258,8 @@
           setAm = document.getElementById("am").value;
           setPm = document.getElementById("pm").value;
           sendMsg("mypet/setTime", setAm+"/"+setPm)
+          content = document.getElementById("feedtimesettings");
+          content.innerHTML = setAm+"/"+setPm
         }
     </script>
 
@@ -520,6 +477,11 @@
                                 <button type="button" class="btn btn-outline-primary" onclick="mypetwater()">수동 물주기</button>
                                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                 </div>
+                              <div class="input-group">
+                                <text class="form-control" >사료 설정 시간</text>
+                                <text class="form-control" id="feedtimesettings"></text>
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                              </div>
                               <div class="input-group">
                                 <text class="form-control" >현재물높이</text>
                                 <text class="form-control" id="waterlevel"></text>
