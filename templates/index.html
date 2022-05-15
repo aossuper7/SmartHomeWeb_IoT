@@ -213,6 +213,7 @@
             mqtt.subscribe("iot/dis");
             mqtt.subscribe("iot/servo");
             mqtt.subscribe("mypet/waterlevel");
+            mqtt.subscribe("mypet/setTimeA");
         }
         // callback함수 - 접속 실패하면 호출되는 함수
         function onFailure(){
@@ -235,6 +236,10 @@
 
           }else if (topic[1] == "sound"){
             alert("큰 소리가 감지되었습니다.");
+          }else if (topic[1] == "setTimeA"){
+            out_msg = msg.payloadString;
+            content = document.getElementById("feedtimesettings");
+            content.innerHTML = out_msg;
           }
         }
         function sendMsg(topic, msg){
@@ -256,6 +261,8 @@
           setAm = document.getElementById("am").value;
           setPm = document.getElementById("pm").value;
           sendMsg("mypet/setTime", setAm+"/"+setPm)
+          content = document.getElementById("feedtimesettings");
+          content.innerHTML = setAm+"/"+setPm
         }
 
         function CctvOnOff() {
@@ -494,6 +501,11 @@
                                 <button type="button" class="btn btn-outline-primary" onclick="mypetwater()">수동 물주기</button>
                                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                 </div>
+                              <div class="input-group">
+                                <text class="form-control" >사료 설정 시간</text>
+                                <text class="form-control" id="feedtimesettings"></text>
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                              </div>
                               <div class="input-group">
                                 <text class="form-control" >현재물높이</text>
                                 <text class="form-control" id="waterlevel"></text>
