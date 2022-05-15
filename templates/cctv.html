@@ -75,17 +75,6 @@
         topic = msg.destinationName.split('/')
         if(topic[1] == "mycamera"){
           document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
-        }else if (topic[1] == "dis"){
-          distance = parseInt(msg.payloadString);
-          if (distance <= 40){
-                alert("보안장치를 먼저 해제해 주세요")
-          }
-        }else if (topic[1] == "mypet"){
-          out_msg = "메시지 전달:"+msg.payloadString;
-          content = document.getElementById("mypet");
-          content.innerHTML = out_msg;
-        }else if (topic[1] == "sound"){
-          alert("큰 소리가 감지되었습니다.");
         }
     }
     function onFailure(){
