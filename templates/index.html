@@ -264,22 +264,6 @@
           content = document.getElementById("feedtimesettings");
           content.innerHTML = setAm+"/"+setPm
         }
-
-        function CctvOnOff() {
-            if (document.getElementById('cctv').value == "CCTV On"){
-                document.getElementById('cctv').value = "CCTV Off";
-                sendMsg("camerachk","start")
-                }
-            else if (document.getElementById('cctv').value == "CCTV Off"){
-                document.getElementById('cctv').value = "CCTV On";
-                sendMsg("camerachk","stop")
-                setTimeout(function() {
-                  document.getElementById('myimg').src ="static/img/cctvwait.png"
-                }, 500);
-                }
-            state = !state
-        };
-
     </script>
 
 
@@ -404,14 +388,14 @@
                 <div class="col-lg-8 mb-4 order-0">
                   <div class="card">
                     <div class="d-flex align-items-end row">
-                      <div class="col-sm-7">
+                      <div class="col-sm-12">
                         <div class="card-body">
                           <h5 class="card-title text-primary">Home CCTV <img src="{% static 'img/icons8-cctv-32.png' %}"/></h5>
                           <img src="{% static 'img/cctvwait.png' %}" id="myimg" width="100%" height="100%"/><br><br>
                           <!-- 버튼을 누르면 cctv on / off -->
                           <div style="display:flex">
                             <input class="btn btn-sm btn-outline-primary" type="button" id="cctv" value="CCTV On" onclick="CctvOnOff()">
-                            <div style="margin-left:150px; width:100%; height:15px; color:#666; font-size:20px; text-align:center;" id="clock">
+                            <div style="margin-left:10%; margin-top: 10px; margin-bottom: 10px; width:100%; height:15px; color:#666; font-size:20px; text-align:center;" id="clock">
                             </div>
                           </div>
                         </div>

@@ -11,7 +11,7 @@ function printClock() {
     	  amPm = 'PM';
     	  currentHours = addZeros(currentHours - 12,2);
         }
-        clock.innerHTML = currentHours+":"+currentMinute+":"+currentSeconds +" <span style='font-size:20px;'>"+ amPm+"</span>"; //날짜를 출력해 줌
+        clock.innerHTML = currentHours+":"+currentMinute+":"+currentSeconds +"<span style='font-size:20px;'>"+ amPm+"</span>"; //날짜를 출력해 줌
         setTimeout("printClock()",1000);// 1초마다 printClock() 함수 호출
       };
 
