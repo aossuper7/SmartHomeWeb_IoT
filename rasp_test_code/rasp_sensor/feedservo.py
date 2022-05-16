@@ -6,7 +6,7 @@ import time
 class Feed_Servo:
     def __init__(self):
         gpio.setmode(gpio.BCM)
-        self.servo_pin = 19
+        self.servo_pin = 26
         gpio.setup(self.servo_pin, gpio.OUT)
         self.pwm = gpio.PWM(self.servo_pin, 50)
         self.pwm.start(3)
@@ -18,4 +18,3 @@ class Feed_Servo:
         time.sleep(0.02)
     def clean(self):
         gpio.cleanup()
-        

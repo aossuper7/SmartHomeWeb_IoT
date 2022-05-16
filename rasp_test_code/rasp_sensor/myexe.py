@@ -3,11 +3,9 @@ from feedtime import feedTime
 from mymqtt import mymqttworker
 from soundsensor import mySound
 
-
-
 if __name__=="__main__":
     try: 
-        mmw = mymqttworker("mypet/#")
+        mmw = mymqttworker()
         mmw.working()
         mysound = mySound()
         mysound.start()
