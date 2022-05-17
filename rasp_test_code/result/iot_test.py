@@ -8,12 +8,10 @@ import serial
 import dht
 import pir_led
 import json
+import buzzer
+import time
 
-# 라즈베리파이에서 아두이노 실행
-# 아두이노 시리얼 모니터 키면 오류남
 uidfileroute = "/home/pi/mywork/basic/project/result/json/user.json"
-humidFileRoute = "/home/pi/mywork/basic/project/result/json/humid.json"
-tempFileRoute = "/home/pi/mywork/basic/project/result/json/temp.json"
 personFileRoute = "/home/pi/mywork/basic/project/result/json/person.json"
 
 
@@ -149,7 +147,8 @@ if __name__ == "__main__":
         arduino = ArduinoSerail()
         rfid = RFID()
         dht = dht.SEN()
-        pir = pir_led.Pir(rfid)
+        buzzerStart = buzzer.Buzzer()
+        pir = pir_led.Pir(rfid, buzzerStart)
         arduino.start()
         rfid.start()
         dht.start()

@@ -5,23 +5,21 @@ import time
 
 
 class Pir(Thread):
-    def __init__(self, rfid):
+    def __init__(self, rfid, buzzer):
         super().__init__()
         self.rfid = rfid
         self.pirPin = 5
         self.blueLED = 20
         self.redLED = 21
-        self.buzzerPin = 16
+        self.buzzerStart = buzzer
         g.setmode(g.BCM)
         g.setup(self.pirPin, g.IN)
         g.setup(self.blueLED, g.OUT)
         g.setup(self.redLED, g.OUT)
-        g.setup(self.buzzerPin, g.OUT)
-        self.pwm = g.PWM(self.buzzerPin, 262)
 
     def warning(self):
         for i in range(10):
-            self.pwm.start(50)
+            self.buzzerStart.buzzerOn()
             g.output(self.blueLED, g.HIGH)
             time.sleep(0.5)
             g.output(self.blueLED, g.LOW)
@@ -36,4 +34,4 @@ class Pir(Thread):
                     publish.single("android/pir", "warning", hostname="192.168.0.24")
                     print("허가되지 않은 사람 감지")
                     self.warning()
-                    self.pwm.stop()
+                    self.buzzerStart.buzzerOff()
