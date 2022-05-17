@@ -94,15 +94,6 @@ class FileReadWrite:
             with open(uidfileroute, "w") as f:
                 json.dump(rfid.uid_dic, f)
 
-    def dht_save(self, data, route, dic):
-        now = datetime.now()
-        current_time = now.strftime("%H/%M/%S")
-        if len(dic) > 19:
-            dic.pop(next(iter(dic)))
-        dic[current_time] = data
-        with open(route, "w") as f:
-            json.dump(dic, f)
-
     def jsonfile(self, route):
         try:
             with open(route, "r") as f:
@@ -157,7 +148,7 @@ if __name__ == "__main__":
         file = FileReadWrite()
         arduino = ArduinoSerail()
         rfid = RFID()
-        dht = dht.SEN(file)
+        dht = dht.SEN()
         pir = pir_led.Pir(rfid)
         arduino.start()
         rfid.start()

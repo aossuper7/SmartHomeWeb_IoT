@@ -1,9 +1,9 @@
-var host = "172.30.1.58";
+var host = "192.168.50.201";
 var port = 9001;
 var mqtt;
 var temp;
 var humid;
-var lastdht;
+var dust;
 
 function onConnect() {
     console.log("접속 성공");
@@ -21,20 +21,18 @@ function onMessageArrived(msg) {
         data = msg.payloadString.split(":");
         humid = data[1];
         temp = data[2];
+        dust = data[3];
         $.ajax({
             type:"GET",
             url:"/dataset",
             data:{"humid":humid,
-                  "temp":temp}
+                  "temp":temp,
+                  "dust":dust}
         })
     }else if(message[1] == "pir") {
         for(let i=0; i<5; i++)
             pushNotify("error","출입 알림","침입 발생 112에 신고하세요!");
     }
-//    else if(message[1] == "dhtget") {
-//        lastdht = msg.payloadString.replace(/[{|}|'| ]/g,"");
-//        dhtdata = lastdht.split(/[:|,]/g);
-//        console.log(dhtdata);
 }
 function sendMsg(msg) {
     message = new Paho.MQTT.Message(msg);
