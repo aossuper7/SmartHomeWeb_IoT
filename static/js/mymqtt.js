@@ -1,4 +1,4 @@
-var host = "192.168.50.201";
+var host = "172.30.1.58";
 var port = 9001;
 var mqtt;
 var temp;
