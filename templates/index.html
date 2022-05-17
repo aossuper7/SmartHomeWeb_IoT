@@ -214,6 +214,7 @@
             mqtt.subscribe("iot/servo");
             mqtt.subscribe("mypet/waterlevel");
             mqtt.subscribe("mypet/setTimeA");
+            mqtt.subscribe("android/pir");
         }
         // callback함수 - 접속 실패하면 호출되는 함수
         function onFailure(){
@@ -226,20 +227,19 @@
             document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
           }else if (topic[1] == "dis"){
             distance = parseInt(msg.payloadString);
-            if (distance <= 40){
-                  alert("보안장치를 먼저 해제해 주세요")
-            }
           }else if (topic[1] == "waterlevel"){
             out_msg = msg.payloadString+"cm";
             content = document.getElementById("waterlevel");
             content.innerHTML = out_msg;
-
           }else if (topic[1] == "sound"){
             alert("큰 소리가 감지되었습니다.");
           }else if (topic[1] == "setTimeA"){
             out_msg = msg.payloadString;
             content = document.getElementById("feedtimesettings");
             content.innerHTML = out_msg;
+          }
+          else if (topic[1] == "pir" && distance <= 40){
+            alert("허가되지 않은 사람이 감지");
           }
         }
         function sendMsg(topic, msg){
@@ -280,9 +280,9 @@
     $(document).ready(function(){
         $("#servo_curtain").change(function(){
             if($("#servo_curtain").is(":checked")){
-                sendMsg('iot/led','servo_open');
+                sendMsg('iot/servo','servo_open');
             }else{
-                sendMsg('iot/led','servo_close');
+                sendMsg('iot/servo','servo_close');
             }
         });
     });
