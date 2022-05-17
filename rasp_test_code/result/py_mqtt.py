@@ -5,13 +5,13 @@ from camerapub import Mycamera
 from threading import Event
 import RPi.GPIO as gpio
 from led import LED
-from watersensor import myWater
 from servo import Servo
 import signal
 import threading
 from distance import mydis
 from feedservo import Feed_Servo
 from feedtime import feedTime
+from water_pump_sound import water_pump_sound
 
 
 class cameramqtt:
@@ -33,9 +33,9 @@ class cameramqtt:
         self.mypetfeed = feedTime()
         self.mypetfeed.start()
 
-        # 펫 물 시간
-        # self.waterSensor = myWater()
-        # self.waterSensor.start()
+        # 펫 물 시간 & 사운드
+        self.water_pump_sound = water_pump_sound()
+        self.water_pump_sound.start()
 
         # led
         self.led = LED()
@@ -105,7 +105,7 @@ class cameramqtt:
             # 펫 물주기
             elif message.topic == "mypet/water":
                 print("물주기 동작")
-                self.waterSensor.manualrun()
+                self.water_pump_sound.manaulwater()
 
             # 시간 설정
             elif message.topic == "mypet/setTime":
