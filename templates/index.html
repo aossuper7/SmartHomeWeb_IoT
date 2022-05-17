@@ -212,6 +212,7 @@
 <!--            mqtt.subscribe("iot/mycamera");-->
 <!--            mqtt.subscribe("iot/dis");-->
 <!--            mqtt.subscribe("iot/servo");-->
+<!--            mqtt.subscribe("iot/sound");-->
 <!--            mqtt.subscribe("mypet/waterlevel");-->
 <!--            mqtt.subscribe("mypet/setTimeA");-->
 <!--            mqtt.subscribe("android/pir");-->
@@ -228,7 +229,7 @@
 <!--          }else if (topic[1] == "dis"){-->
 <!--            distance = parseInt(msg.payloadString);-->
 <!--          }else if (topic[1] == "waterlevel"){-->
-<!--            out_msg = msg.payloadString+"cm";-->
+<!--            out_msg = msg.payloadString+"mm";-->
 <!--            content = document.getElementById("waterlevel");-->
 <!--            content.innerHTML = out_msg;-->
 <!--          }else if (topic[1] == "sound"){-->
