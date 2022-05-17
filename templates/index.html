@@ -201,79 +201,79 @@
     <script src="https://code.jquery.com/jquery-latest.js"></script>
 
 
-    <script type="text/javascript">
-        var host = "192.168.0.24";
-        var distance = 0;
-        var port = 9001;
-        var mqtt;
+<!--    <script type="text/javascript">-->
+<!--        var host = "192.168.0.24";-->
+<!--        var distance = 0;-->
+<!--        var port = 9001;-->
+<!--        var mqtt;-->
 
-        function onConnect(){
-            console.log("접속완료");
-            mqtt.subscribe("iot/mycamera");
-            mqtt.subscribe("iot/dis");
-            mqtt.subscribe("iot/servo");
-            mqtt.subscribe("mypet/waterlevel");
-        }
-        // callback함수 - 접속 실패하면 호출되는 함수
-        function onFailure(){
-            console.log("접속실패");
-            setTimeout(MQTTConnect,reconnectTimeout);
-        }
-        function onMessageArrived(msg){
-          topic = msg.destinationName.split('/')
-          if(topic[1] == "mycamera"){
-            document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
-          }else if (topic[1] == "dis"){
-            distance = parseInt(msg.payloadString);
-            if (distance <= 40){
-                  alert("보안장치를 먼저 해제해 주세요")
-            }
-          }else if (topic[1] == "waterlevel"){
-            out_msg = msg.payloadString+"cm";
-            content = document.getElementById("waterlevel");
-            content.innerHTML = out_msg;
+<!--        function onConnect(){-->
+<!--            console.log("접속완료");-->
+<!--            mqtt.subscribe("iot/mycamera");-->
+<!--            mqtt.subscribe("iot/dis");-->
+<!--            mqtt.subscribe("iot/servo");-->
+<!--            mqtt.subscribe("mypet/waterlevel");-->
+<!--        }-->
+<!--        // callback함수 - 접속 실패하면 호출되는 함수-->
+<!--        function onFailure(){-->
+<!--            console.log("접속실패");-->
+<!--            setTimeout(MQTTConnect,reconnectTimeout);-->
+<!--        }-->
+<!--        function onMessageArrived(msg){-->
+<!--          topic = msg.destinationName.split('/')-->
+<!--          if(topic[1] == "mycamera"){-->
+<!--            document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))-->
+<!--          }else if (topic[1] == "dis"){-->
+<!--            distance = parseInt(msg.payloadString);-->
+<!--            if (distance <= 40){-->
+<!--                  alert("보안장치를 먼저 해제해 주세요")-->
+<!--            }-->
+<!--          }else if (topic[1] == "waterlevel"){-->
+<!--            out_msg = msg.payloadString+"cm";-->
+<!--            content = document.getElementById("waterlevel");-->
+<!--            content.innerHTML = out_msg;-->
 
-          }else if (topic[1] == "sound"){
-            alert("큰 소리가 감지되었습니다.");
-          }
-        }
-        function sendMsg(topic, msg){
-          message = new Paho.MQTT.Message(msg);
-          message.destinationName = topic
-          mqtt.send(message);
-        }
-        function MQTTConnect(){
-            mqtt = new Paho.MQTT.Client(host,port,"streaming");
-            var options = {
-                timeout:3,
-                onSuccess:onConnect,
-                onFailure:onFailure,
-            }
-            mqtt.onMessageArrived = onMessageArrived;
-            mqtt.connect(options);
-        }
-        function setTime(){
-          setAm = document.getElementById("am").value;
-          setPm = document.getElementById("pm").value;
-          sendMsg("mypet/setTime", setAm+"/"+setPm)
-        }
+<!--          }else if (topic[1] == "sound"){-->
+<!--            alert("큰 소리가 감지되었습니다.");-->
+<!--          }-->
+<!--        }-->
+<!--        function sendMsg(topic, msg){-->
+<!--          message = new Paho.MQTT.Message(msg);-->
+<!--          message.destinationName = topic-->
+<!--          mqtt.send(message);-->
+<!--        }-->
+<!--        function MQTTConnect(){-->
+<!--            mqtt = new Paho.MQTT.Client(host,port,"streaming");-->
+<!--            var options = {-->
+<!--                timeout:3,-->
+<!--                onSuccess:onConnect,-->
+<!--                onFailure:onFailure,-->
+<!--            }-->
+<!--            mqtt.onMessageArrived = onMessageArrived;-->
+<!--            mqtt.connect(options);-->
+<!--        }-->
+<!--        function setTime(){-->
+<!--          setAm = document.getElementById("am").value;-->
+<!--          setPm = document.getElementById("pm").value;-->
+<!--          sendMsg("mypet/setTime", setAm+"/"+setPm)-->
+<!--        }-->
 
-        function CctvOnOff() {
-            if (document.getElementById('cctv').value == "CCTV On"){
-                document.getElementById('cctv').value = "CCTV Off";
-                sendMsg("camerachk","start")
-                }
-            else if (document.getElementById('cctv').value == "CCTV Off"){
-                document.getElementById('cctv').value = "CCTV On";
-                sendMsg("camerachk","stop")
-                setTimeout(function() {
-                  document.getElementById('myimg').src ="static/img/cctvwait.png"
-                }, 500);
-                }
-            state = !state
-        };
+<!--        function CctvOnOff() {-->
+<!--            if (document.getElementById('cctv').value == "CCTV On"){-->
+<!--                document.getElementById('cctv').value = "CCTV Off";-->
+<!--                sendMsg("camerachk","start")-->
+<!--                }-->
+<!--            else if (document.getElementById('cctv').value == "CCTV Off"){-->
+<!--                document.getElementById('cctv').value = "CCTV On";-->
+<!--                sendMsg("camerachk","stop")-->
+<!--                setTimeout(function() {-->
+<!--                  document.getElementById('myimg').src ="static/img/cctvwait.png"-->
+<!--                }, 500);-->
+<!--                }-->
+<!--            state = !state-->
+<!--        };-->
 
-    </script>
+<!--    </script>-->
 
 
     <script type="text/javascript">
@@ -563,13 +563,15 @@
                     var dht_humid = dht_humid.split(/:|,/g);
                     var dht_temp = JSON.stringify('{{dht.jsonTemp}}').replace(/&#x27;|[|\"|{|}| ]/g,"");
                     var dht_temp = dht_temp.split(/:|,/g);
+                    var dht_dust = JSON.stringify('{{dht.jsonDust}}').replace(/&#x27;|[|\"|{|}| ]/g,"");
+                    var dht_dust = dht_dust.split(/:|,/g);
                     </script>
                     <script src="{% static 'js/chart.js' %}"></script>
                     </script>
-                    <script type="text/javascript">
-                        // 사용자 정의 함수를 호출해서 mqtt가 동작할 수 있도록 함
-                        MQTTConnect()
-                    </script>
+<!--                    <script type="text/javascript">-->
+<!--                        // 사용자 정의 함수를 호출해서 mqtt가 동작할 수 있도록 함-->
+<!--                        MQTTConnect()-->
+<!--                    </script>-->
                   </div>
                 </div>
               </div>

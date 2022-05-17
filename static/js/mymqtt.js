@@ -3,7 +3,7 @@ var port = 9001;
 var mqtt;
 var temp;
 var humid;
-var lastdht;
+var dust;
 
 function onConnect() {
     console.log("접속 성공");
@@ -21,11 +21,13 @@ function onMessageArrived(msg) {
         data = msg.payloadString.split(":");
         humid = data[1];
         temp = data[2];
+        dust = data[3];
         $.ajax({
             type:"GET",
             url:"/dataset",
             data:{"humid":humid,
-                  "temp":temp}
+                  "temp":temp,
+                  "dust":dust}
         })
     }else if(message[1] == "pir") {
         for(let i=0; i<5; i++)

@@ -9,6 +9,7 @@ import json
 
 humidSetData = {}
 tempSetData = {}
+dustSetData = {}
 
 def FileSet(name, dic, data):
     now = datetime.now()
@@ -37,7 +38,8 @@ class MyView(View):
     def home(self, request):
         jsonHumid = FileRead("humid.json")
         jsonTemp = FileRead("temp.json")
-        data = {'jsonHumid': jsonHumid, 'jsonTemp': jsonTemp}
+        jsonDust = FileRead("dust.json")
+        data = {'jsonHumid': jsonHumid, 'jsonTemp': jsonTemp, 'jsonDust' : jsonDust}
         return render(request, 'index.html', {'dht' : data})
 
     @request_mapping("/cctv", method="get")
@@ -48,10 +50,13 @@ class MyView(View):
     def dataset(self, request):
         humid = request.GET.get('humid')
         temp = request.GET.get('temp')
+        dust = request.GET.get('dust')
         humidSetData = FileRead("humid.json")
         tempSetData = FileRead("temp.json")
+        dustSetData = FileRead("dust.json")
         FileSet("humid.json", humidSetData, humid)
         FileSet("temp.json", tempSetData, temp)
+        FileSet("dust.json", dustSetData, dust)
         return JsonResponse({"result": 1})
 
 
