@@ -3,7 +3,7 @@ from feedservo import Feed_Servo
 from email.utils import localtime
 import time
 from threading import Thread
-
+import paho.mqtt.publish as publisher
 
 class feedTime(Thread):
     def __init__(self):
@@ -40,8 +40,7 @@ class feedTime(Thread):
                     time.sleep(5)
                     self.feedmypet.doorclose()
                     print("사료닫힘")
-                publisher.single("iot/timechk", str(self.setTime1) + "/" + str(self.setTime2),
-                                     hostname="192.168.0.2")
+                publisher.single("iot/timechk",str(self.setTime1) + "/" + str(self.setTime2),hostname="192.168.0.2")
         except KeyboardInterrupt:
             pass
         finally:

@@ -26,7 +26,7 @@ class SEN(Thread):
                 dust_data = 256 * int(dust_temp[9]) + int(dust_temp[10])
                 publish.single("android/dht",
                                "hu:" + str(humidity_data) + ":" + str(temperature_data) + ":" + str(dust_data),
-                               hostname="192.168.50.201")
+                               hostname="192.168.0.2")
                 print(humidity_data, temperature_data, dust_data)
                 time.sleep(4.8)
             except RuntimeError as error:

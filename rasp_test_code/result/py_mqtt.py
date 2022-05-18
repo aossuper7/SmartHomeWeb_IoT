@@ -11,7 +11,7 @@ import threading
 from distance import mydis
 from feedservo import Feed_Servo
 from feedtime import feedTime
-from water_pump_sound import water_pump_sound
+
 
 
 class cameramqtt:
@@ -33,9 +33,9 @@ class cameramqtt:
         self.mypetfeed = feedTime()
         self.mypetfeed.start()
 
-        # 펫 물 시간 & 사운드
-        self.water_pump_sound = water_pump_sound()
-        self.water_pump_sound.start()
+        # # 펫 물 시간 & 사운드
+        # self.water_pump_sound = water_pump_sound()
+        # self.water_pump_sound.start()
 
         # led
         self.led = LED()
@@ -51,7 +51,7 @@ class cameramqtt:
 
     def mqtt_connect(self):
         try:
-            self.client.connect("192.168.0.24", 1883, 60)
+            self.client.connect("192.168.0.2", 1883, 60)
             signal.signal(signal.SIGINT, self.signal_handler)
             mythreadobj = threading.Thread(target=self.client.loop_forever)
             mythreadobj.start()
@@ -102,10 +102,10 @@ class cameramqtt:
                 print("도어 오픈")
                 self.mypetfeed.manualrun()
 
-            # 펫 물주기
-            elif message.topic == "mypet/water":
-                print("물주기 동작")
-                self.water_pump_sound.manaulwater()
+            # # 펫 물주기
+            # elif message.topic == "mypet/water":
+            #     print("물주기 동작")
+            #     self.water_pump_sound.manaulwater()
 
             # 시간 설정
             elif message.topic == "mypet/setTime":
