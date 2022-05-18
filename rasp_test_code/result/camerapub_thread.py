@@ -19,7 +19,7 @@ class camerapub(threading.Thread):
         self.timechk.start()
         while True:
             frame = self.camera.getStreaming()
-            publisher.single("iot/mycamera", frame, hostname="192.168.0.24")
+            publisher.single("iot/mycamera", frame, hostname="192.168.0.2")
             if self.timechk.count == 1:
                 self.timechk.count = 0
                 break

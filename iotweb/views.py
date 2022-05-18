@@ -117,7 +117,7 @@ class MyView(View):
     @request_mapping("/login", method="post")
     def androidlogin(self, request):
         if request.method == 'POST':
-            print("request_ok")
+
             data = JSONParser().parse(request)
             user_id = data["user_id"]
             print(data)
@@ -125,6 +125,7 @@ class MyView(View):
             if obj.user_id != user_id:
                 return JsonResponse("fail", safe=False, json_dumps_params={'ensure_ascii': False})
             if data["user_pwd"] == obj.user_pwd:
+                print("request_ok")
                 request.session['sessionid'] = obj.user_id;
                 return JsonResponse("ok", safe=False, json_dumps_params={'ensure_ascii': False})
             else:

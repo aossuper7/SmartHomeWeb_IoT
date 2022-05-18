@@ -31,7 +31,7 @@ class Pir(Thread):
         while True:
             if self.rfid.access_state['person'] == 0:
                 if g.input(self.pirPin) == 1:
-                    publish.single("android/pir", "warning", hostname="192.168.0.24")
+                    publish.single("android/pir", "warning", hostname="192.168.0.2")
                     print("허가되지 않은 사람 감지")
                     self.warning()
                     self.buzzerStart.buzzerOff()

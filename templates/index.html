@@ -217,6 +217,7 @@
             mqtt.subscribe("mypet/setTimeA");
             mqtt.subscribe("android/pir");
             mqtt.subscribe("android/#");
+            mqtt.subscribe("iot/timechk");
         }
         // callback함수 - 접속 실패하면 호출되는 함수
         function onFailure(){
@@ -240,9 +241,9 @@
             content = document.getElementById("feedtimesettings");
             content.innerHTML = out_msg;
           }
-          else if (topic[1] == "pir" && distance <= 40){
-            alert("허가되지 않은 사람이 감지");
-          }else if(topic[1] == "rfid") {
+<!--          else if (topic[1] == "pir" && distance <= 40){-->
+<!--            alert("허가되지 않은 사람이 감지");-->
+          else if(topic[1] == "rfid") {
               pushNotify("success","출입 알림",msg.payloadString+"님이 들어왔습니다");
           }else if(topic[1] == "dht") {
               data = msg.payloadString.split(":");
@@ -257,11 +258,18 @@
                         "dust":dust}
 
               })
-          }else if(topic[1] == "pir") {
+          }else if(topic[1] == "pir" && distance <=40) {
               for(let i=0; i<5; i++)
                   pushNotify("error","출입 알림","침입 발생 112에 신고하세요!");
+
+          }else if(topic[1] == "timechk"){
+            timedata = msg.payloadString.split("/")
+            content = document.getElementById("feedtimesettings");
+            amTimedata = timedata[0].split(":")
+            pmTimedata = timedata[1].split(":")
+            content.innerHTML = amTimedata[0]+":"+amTimedata[1]+"/"+pmTimedata[0]+":"+pmTimedata[1]
           }
-        }
+         }
         function sendMsg(topic, msg){
           message = new Paho.MQTT.Message(msg);
           message.destinationName = topic
@@ -459,7 +467,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <div class="col-lg-13 col-md-12 col-8 mb-4">
                       <div class="card">
                         <div class="card-body">

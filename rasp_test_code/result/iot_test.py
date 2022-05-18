@@ -1,7 +1,6 @@
 from py_mqtt import cameramqtt
 from threading import Thread
 from datetime import datetime
-from soundsensor import mySound
 import paho.mqtt.publish as publish
 import RPi.GPIO as g
 import serial
@@ -125,6 +124,9 @@ class ArduinoSerail(Thread):
     def run(self):
         while True:
             if self.ser.in_waiting > 0:
+                buzzerStart.buzzerOn()
+                time.sleep(0.3)
+                buzzerStart.buzzerOff()
                 msg = self.ser.readline().decode('utf-8').rstrip()
                 if rfid.btn_state == 1:  # 추가 버튼이 눌려졌다면
                     file.uidsave(msg)
@@ -135,8 +137,8 @@ class ArduinoSerail(Thread):
                 elif msg in rfid.uid_dic:  # 출입 / 외출
                     if rfid.enter_out(msg):
                         file.personplus()
-                        print("ddd")
-                        publish.single("android/rfid", msg, hostname="192.168.0.24")
+                        print("출입 확인")
+                        publish.single("android/rfid", msg, hostname="192.168.0.2")
                     else:
                         file.personminus()
 
