@@ -201,71 +201,90 @@
     <script src="https://code.jquery.com/jquery-latest.js"></script>
 
 
-<!--    <script type="text/javascript">-->
-<!--        var host = "192.168.0.24";-->
-<!--        var distance = 0;-->
-<!--        var port = 9001;-->
-<!--        var mqtt;-->
+    <script type="text/javascript">
+        var host = "192.168.0.2";
+        var distance = 0;
+        var port = 9001;
+        var mqtt;
 
-<!--        function onConnect(){-->
-<!--            console.log("접속완료");-->
-<!--            mqtt.subscribe("iot/mycamera");-->
-<!--            mqtt.subscribe("iot/dis");-->
-<!--            mqtt.subscribe("iot/servo");-->
-<!--            mqtt.subscribe("iot/sound");-->
-<!--            mqtt.subscribe("mypet/waterlevel");-->
-<!--            mqtt.subscribe("mypet/setTimeA");-->
-<!--            mqtt.subscribe("android/pir");-->
-<!--        }-->
-<!--        // callback함수 - 접속 실패하면 호출되는 함수-->
-<!--        function onFailure(){-->
-<!--            console.log("접속실패");-->
-<!--            setTimeout(MQTTConnect,reconnectTimeout);-->
-<!--        }-->
-<!--        function onMessageArrived(msg){-->
-<!--          topic = msg.destinationName.split('/')-->
-<!--          if(topic[1] == "mycamera"){-->
-<!--            document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))-->
-<!--          }else if (topic[1] == "dis"){-->
-<!--            distance = parseInt(msg.payloadString);-->
-<!--          }else if (topic[1] == "waterlevel"){-->
-<!--            out_msg = msg.payloadString+"mm";-->
-<!--            content = document.getElementById("waterlevel");-->
-<!--            content.innerHTML = out_msg;-->
-<!--          }else if (topic[1] == "sound"){-->
-<!--            alert("큰 소리가 감지되었습니다.");-->
-<!--          }else if (topic[1] == "setTimeA"){-->
-<!--            out_msg = msg.payloadString;-->
-<!--            content = document.getElementById("feedtimesettings");-->
-<!--            content.innerHTML = out_msg;-->
-<!--          }-->
-<!--          else if (topic[1] == "pir" && distance <= 40){-->
-<!--            alert("허가되지 않은 사람이 감지");-->
-<!--          }-->
-<!--        }-->
-<!--        function sendMsg(topic, msg){-->
-<!--          message = new Paho.MQTT.Message(msg);-->
-<!--          message.destinationName = topic-->
-<!--          mqtt.send(message);-->
-<!--        }-->
-<!--        function MQTTConnect(){-->
-<!--            mqtt = new Paho.MQTT.Client(host,port,"streaming");-->
-<!--            var options = {-->
-<!--                timeout:3,-->
-<!--                onSuccess:onConnect,-->
-<!--                onFailure:onFailure,-->
-<!--            }-->
-<!--            mqtt.onMessageArrived = onMessageArrived;-->
-<!--            mqtt.connect(options);-->
-<!--        }-->
-<!--        function setTime(){-->
-<!--          setAm = document.getElementById("am").value;-->
-<!--          setPm = document.getElementById("pm").value;-->
-<!--          sendMsg("mypet/setTime", setAm+"/"+setPm)-->
-<!--          content = document.getElementById("feedtimesettings");-->
-<!--          content.innerHTML = setAm+"/"+setPm-->
-<!--        }-->
-<!--    </script>-->
+        function onConnect(){
+            console.log("접속완료");
+            mqtt.subscribe("iot/mycamera");
+            mqtt.subscribe("iot/dis");
+            mqtt.subscribe("iot/servo");
+            mqtt.subscribe("iot/sound");
+            mqtt.subscribe("mypet/waterlevel");
+            mqtt.subscribe("mypet/setTimeA");
+            mqtt.subscribe("android/pir");
+            mqtt.subscribe("android/#");
+        }
+        // callback함수 - 접속 실패하면 호출되는 함수
+        function onFailure(){
+            console.log("접속실패");
+            setTimeout(MQTTConnect,reconnectTimeout);
+        }
+        function onMessageArrived(msg){
+          topic = msg.destinationName.split('/')
+          if(topic[1] == "mycamera"){
+            document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
+          }else if (topic[1] == "dis"){
+            distance = parseInt(msg.payloadString);
+          }else if (topic[1] == "waterlevel"){
+            out_msg = msg.payloadString+"mm";
+            content = document.getElementById("waterlevel");
+            content.innerHTML = out_msg;
+          }else if (topic[1] == "sound"){
+            alert("큰 소리가 감지되었습니다.");
+          }else if (topic[1] == "setTimeA"){
+            out_msg = msg.payloadString;
+            content = document.getElementById("feedtimesettings");
+            content.innerHTML = out_msg;
+          }
+          else if (topic[1] == "pir" && distance <= 40){
+            alert("허가되지 않은 사람이 감지");
+          }else if(topic[1] == "rfid") {
+              pushNotify("success","출입 알림",msg.payloadString+"님이 들어왔습니다");
+          }else if(topic[1] == "dht") {
+              data = msg.payloadString.split(":");
+              humid = data[1];
+              temp = data[2];
+              dust = data[3];
+              $.ajax({
+                  type:"GET",
+                  url:"/dataset",
+                  data:{"humid":humid,
+                        "temp":temp,
+                        "dust":dust}
+
+              })
+          }else if(topic[1] == "pir") {
+              for(let i=0; i<5; i++)
+                  pushNotify("error","출입 알림","침입 발생 112에 신고하세요!");
+          }
+        }
+        function sendMsg(topic, msg){
+          message = new Paho.MQTT.Message(msg);
+          message.destinationName = topic
+          mqtt.send(message);
+        }
+        function MQTTConnect(){
+            mqtt = new Paho.MQTT.Client(host,port,"streaming");
+            var options = {
+                timeout:3,
+                onSuccess:onConnect,
+                onFailure:onFailure,
+            }
+            mqtt.onMessageArrived = onMessageArrived;
+            mqtt.connect(options);
+        }
+        function setTime(){
+          setAm = document.getElementById("am").value;
+          setPm = document.getElementById("pm").value;
+          sendMsg("mypet/setTime", setAm+"/"+setPm)
+          content = document.getElementById("feedtimesettings");
+          content.innerHTML = setAm+"/"+setPm
+        }
+    </script>
 
 
     <script type="text/javascript">
@@ -440,30 +459,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-13 col-md-12 col-8 mb-4" style="display:block">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0"><br>
-                              <img src="{% static 'img/icons8-alarm-clock-48.png' %}"/>
-                            </div>
-                            <div class="dropdown">
-                              <div class="d-flex">
-                                <span class="fw-semibold d-block mb-1">Alarm &nbsp&nbsp</span>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" checked />
-                                </div>
-                              </div>
-                              <div class="input-group">
-                                <button type="button" class="btn btn-outline-primary" onclick="#">Save</button>
-                                <input type="text" class="form-control" placeholder="HH:MM"/>
-                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    
                     <div class="col-lg-13 col-md-12 col-8 mb-4">
                       <div class="card">
                         <div class="card-body">
@@ -565,10 +561,10 @@
                     </script>
                     <script src="{% static 'js/chart.js' %}"></script>
                     </script>
-<!--                    <script type="text/javascript">-->
-<!--                        // 사용자 정의 함수를 호출해서 mqtt가 동작할 수 있도록 함-->
-<!--                        MQTTConnect()-->
-<!--                    </script>-->
+                    <script type="text/javascript">
+                        // 사용자 정의 함수를 호출해서 mqtt가 동작할 수 있도록 함
+                        MQTTConnect()
+                    </script>
                   </div>
                 </div>
               </div>
