@@ -68,4 +68,5 @@
 
 # 시행 영상 및 자세한 기능 소개 PPT 
 시행 영상 : [Click](https://www.youtube.com/watch?v=DSjFLNet0Gc)  
-PPT : [Click](https://docs.google.com/presentation/d/1-jFBKCyaAQyeGL1tQS6VXlrhtpOCh3nr/edit?usp=sharing&ouid=110387775802768263360&rtpof=true&sd=true)
+PPT : [Click](https://docs.google.com/presentation/d/1-jFBKCyaAQyeGL1tQS6VXlrhtpOCh3nr/edit?usp=sharing&ouid=110387775802768263360&rtpof=true&sd=true)  
+App Github : [Click](https://github.com/lkh1212/iotweb_app)
