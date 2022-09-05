@@ -67,5 +67,5 @@
 > 실시간으로 큰 소리를 감지해 수준 이상이 되면 Web/App 알람 기능  
 
 # 시행 영상 및 자세한 기능 소개 PPT 
-시행 영상 : [Click](https://www.youtube.com/watch?v=DSjFLNet0Gc)
+시행 영상 : [Click](https://www.youtube.com/watch?v=DSjFLNet0Gc)  
 PPT : [Click](https://docs.google.com/presentation/d/1-jFBKCyaAQyeGL1tQS6VXlrhtpOCh3nr/edit?usp=sharing&ouid=110387775802768263360&rtpof=true&sd=true)
