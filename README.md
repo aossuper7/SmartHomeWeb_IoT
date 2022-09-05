@@ -70,3 +70,6 @@
 시행 영상 : [Click](https://www.youtube.com/watch?v=DSjFLNet0Gc)  
 PPT : [Click](https://docs.google.com/presentation/d/1-jFBKCyaAQyeGL1tQS6VXlrhtpOCh3nr/edit?usp=sharing&ouid=110387775802768263360&rtpof=true&sd=true)  
 App Github : [Click](https://github.com/lkh1212/iotweb_app)
+
+# 4팀중에 1등 (약 20명 평가함)
+<img width="60%" src="https://user-images.githubusercontent.com/12439450/188503813-94fa11ce-304e-46fd-b5cc-dda9fe0b55fd.jpg">
