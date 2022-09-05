@@ -1,6 +1,141 @@
 <!DOCTYPE html>
 {% load static %}
+  <!--로그인 안 된 경우-->
+{% if request.session.sessionid == None %}
+<html
+  lang="en"
+  class="light-style customizer-hide"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../assets/"
+  data-template="vertical-menu-template-free"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
 
+    <title>로그인</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon1.ico' %}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="{% static 'fonts/boxicons.css' %}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{% static 'css/core.css' %}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{% static 'css/theme-default.css' %}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{% static 'css/demo.css' %}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{% static 'css/perfect-scrollbar.css' %}" />
+
+    <!-- Page CSS -->
+    <!-- Page -->
+    <link rel="stylesheet" href="{% static 'css/page-auth.css' %}" />
+    <!-- Helpers -->
+    <script src="{% static 'js/helpers.js' %}"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="{% static 'js/config.js' %}"></script>
+  </head>
+
+  <body>
+    <!-- Content -->
+    <div class="container-xxl">
+      <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+          <!-- Register -->
+          <div class="card">
+            <div class="card-body">
+              <!-- Logo -->
+              <div class="app-brand justify-content-center">
+                <a href="/" class="app-brand-link gap-2">
+                  <span class="app-brand-logo demo">
+                    <img src="{% static 'img/icons8-home-48.png' %}">
+                      <defs>
+                        <path
+                          d="M13.7918663,0.358365126 L3.39788168,7.44174259 C0.566865006,9.69408886 -0.379795268,12.4788597 0.557900856,15.7960551 C0.68998853,16.2305145 1.09562888,17.7872135 3.12357076,19.2293357 C3.8146334,19.7207684 5.32369333,20.3834223 7.65075054,21.2172976 L7.59773219,21.2525164 L2.63468769,24.5493413 C0.445452254,26.3002124 0.0884951797,28.5083815 1.56381646,31.1738486 C2.83770406,32.8170431 5.20850219,33.2640127 7.09180128,32.5391577 C8.347334,32.0559211 11.4559176,30.0011079 16.4175519,26.3747182 C18.0338572,24.4997857 18.6973423,22.4544883 18.4080071,20.2388261 C17.963753,17.5346866 16.1776345,15.5799961 13.0496516,14.3747546 L10.9194936,13.4715819 L18.6192054,7.984237 L13.7918663,0.358365126 Z"
+                          id="path-1"
+                        ></path>
+                        <path
+                          d="M5.47320593,6.00457225 C4.05321814,8.216144 4.36334763,10.0722806 6.40359441,11.5729822 C8.61520715,12.571656 10.0999176,13.2171421 10.8577257,13.5094407 L15.5088241,14.433041 L18.6192054,7.984237 C15.5364148,3.11535317 13.9273018,0.573395879 13.7918663,0.358365126 C13.5790555,0.511491653 10.8061687,2.3935607 5.47320593,6.00457225 Z"
+                          id="path-3"
+                        ></path>
+                        <path
+                          d="M7.50063644,21.2294429 L12.3234468,23.3159332 C14.1688022,24.7579751 14.397098,26.4880487 13.008334,28.506154 C11.6195701,30.5242593 10.3099883,31.790241 9.07958868,32.3040991 C5.78142938,33.4346997 4.13234973,34 4.13234973,34 C4.13234973,34 2.75489982,33.0538207 2.37032616e-14,31.1614621 C-0.55822714,27.8186216 -0.55822714,26.0572515 -4.05231404e-15,25.8773518 C0.83734071,25.6075023 2.77988457,22.8248993 3.3049379,22.52991 C3.65497346,22.3332504 5.05353963,21.8997614 7.50063644,21.2294429 Z"
+                          id="path-4"
+                        ></path>
+                        <path
+                          d="M20.6,7.13333333 L25.6,13.8 C26.2627417,14.6836556 26.0836556,15.9372583 25.2,16.6 C24.8538077,16.8596443 24.4327404,17 24,17 L14,17 C12.8954305,17 12,16.1045695 12,15 C12,14.5672596 12.1403557,14.1461923 12.4,13.8 L17.4,7.13333333 C18.0627417,6.24967773 19.3163444,6.07059163 20.2,6.73333333 C20.3516113,6.84704183 20.4862915,6.981722 20.6,7.13333333 Z"
+                          id="path-5"
+                        ></path>
+                      </defs>
+                      <g id="g-app-brand" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="Brand-Logo" transform="translate(-27.000000, -15.000000)">
+                          <g id="Icon" transform="translate(27.000000, 15.000000)">
+                            <g id="Mask" transform="translate(0.000000, 8.000000)">
+                              <mask id="mask-2" fill="white">
+                                <use xlink:href="#path-1"></use>
+                              </mask>
+                              <use fill="#696cff" xlink:href="#path-1"></use>
+                              <g id="Path-3" mask="url(#mask-2)">
+                                <use fill="#696cff" xlink:href="#path-3"></use>
+                                <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-3"></use>
+                              </g>
+                              <g id="Path-4" mask="url(#mask-2)">
+                                <use fill="#696cff" xlink:href="#path-4"></use>
+                                <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-4"></use>
+                              </g>
+                            </g>
+                            <g
+                              id="Triangle"
+                              transform="translate(19.000000, 11.000000) rotate(-300.000000) translate(-19.000000, -11.000000) "
+                            >
+                              <use fill="#696cff" xlink:href="#path-5"></use>
+                              <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-5"></use>
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                    </svg>
+                  </span>
+                  <span class="app-brand-text demo text-body fw-bolder">Smart Home</span>
+                </a>
+              </div>
+              <!-- /Logo -->
+              <h4 class="d-flex  justify-content-center">로그인 해 주세요</h4>
+              <a class ="d-flex  justify-content-center" href ="/">로그인 하러 가기</a>
+            </div>
+          </div>
+          <!-- /Register -->
+        </div>
+      </div>
+    </div>
+    <!-- Core JS -->
+    <!-- Page JS -->
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+  </body>
+</html>
+
+{% else %}
+  <!--로그인 된 경우-->
 <html
   lang="en"
   class="light-style layout-menu-fixed"
@@ -43,8 +178,9 @@
 
     <link rel="stylesheet" href="{% static 'css/apex-charts.css' %}" />
 
-    <!-- Page CSS -->
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
+<!--    <link rel="stylesheet" href="{% static 'css/modal.css' %}"/>-->
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
     <!-- Helpers -->
     <script src="{% static 'js/helpers.js' %}"></script>
     <script src="{% static 'js/config.js' %}"></script>
@@ -52,17 +188,144 @@
     <script src="https://cdn.jsdelivr.net/gh/alpine-collective/alpine-magic-helpers@0.5.x/dist/component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
     <script type="text/javascript" src="{% static 'js/clock.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/btncctvonoff.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/btncctvonoff.js' %}">
+    </script>
+    <script type="text/javascript" src="{% static 'js/mypet.js' %}">
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js"
+            type = "text/javascript"> </script>
+    <script src="{% static 'js/mymqtt.js' %}"></script>
+    <script src="{% static 'js/rfid_alert.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+
+
+    <script type="text/javascript">
+        var host = "192.168.0.2";
+        var distance = 0;
+        var port = 9001;
+        var mqtt;
+
+        function onConnect(){
+            console.log("접속완료");
+            mqtt.subscribe("iot/mycamera");
+            mqtt.subscribe("iot/dis");
+            mqtt.subscribe("iot/servo");
+            mqtt.subscribe("iot/sound");
+            mqtt.subscribe("mypet/waterlevel");
+            mqtt.subscribe("mypet/setTimeA");
+            mqtt.subscribe("android/pir");
+            mqtt.subscribe("android/#");
+            mqtt.subscribe("iot/timechk");
+        }
+        // callback함수 - 접속 실패하면 호출되는 함수
+        function onFailure(){
+            console.log("접속실패");
+            setTimeout(MQTTConnect,reconnectTimeout);
+        }
+        function onMessageArrived(msg){
+          topic = msg.destinationName.split('/')
+          if(topic[1] == "mycamera"){
+            document.getElementById("myimg").src = "data:image/jpeg;base64,"+btoa(String.fromCharCode.apply(null,msg.payloadBytes))
+          }else if (topic[1] == "dis"){
+            distance = parseInt(msg.payloadString);
+          }else if (topic[1] == "waterlevel"){
+            out_msg = msg.payloadString+"mm";
+            content = document.getElementById("waterlevel");
+            content.innerHTML = out_msg;
+          }else if (topic[1] == "sound"){
+            alert("큰 소리가 감지되었습니다.");
+          }else if (topic[1] == "setTimeA"){
+            out_msg = msg.payloadString;
+            content = document.getElementById("feedtimesettings");
+            content.innerHTML = out_msg;
+          }
+<!--          else if (topic[1] == "pir" && distance <= 40){-->
+<!--            alert("허가되지 않은 사람이 감지");-->
+          else if(topic[1] == "rfid") {
+              pushNotify("success","출입 알림",msg.payloadString+"님이 들어왔습니다");
+          }else if(topic[1] == "dht") {
+              data = msg.payloadString.split(":");
+              humid = data[1];
+              temp = data[2];
+              dust = data[3];
+              $.ajax({
+                  type:"GET",
+                  url:"/dataset",
+                  data:{"humid":humid,
+                        "temp":temp,
+                        "dust":dust}
+
+              })
+          }else if(topic[1] == "pir" && distance <=40) {
+              for(let i=0; i<5; i++)
+                  pushNotify("error","출입 알림","침입 발생 112에 신고하세요!");
+
+          }else if(topic[1] == "timechk"){
+            timedata = msg.payloadString.split("/")
+            content = document.getElementById("feedtimesettings");
+            amTimedata = timedata[0].split(":")
+            pmTimedata = timedata[1].split(":")
+            content.innerHTML = amTimedata[0]+":"+amTimedata[1]+"/"+pmTimedata[0]+":"+pmTimedata[1]
+          }
+         }
+        function sendMsg(topic, msg){
+          message = new Paho.MQTT.Message(msg);
+          message.destinationName = topic
+          mqtt.send(message);
+        }
+        function MQTTConnect(){
+            mqtt = new Paho.MQTT.Client(host,port,"streaming");
+            var options = {
+                timeout:3,
+                onSuccess:onConnect,
+                onFailure:onFailure,
+            }
+            mqtt.onMessageArrived = onMessageArrived;
+            mqtt.connect(options);
+        }
+        function setTime(){
+          setAm = document.getElementById("am").value;
+          setPm = document.getElementById("pm").value;
+          sendMsg("mypet/setTime", setAm+"/"+setPm)
+          content = document.getElementById("feedtimesettings");
+          content.innerHTML = setAm+"/"+setPm
+        }
+    </script>
+
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#led_ck").change(function(){
+            if($("#led_ck").is(":checked")){
+                sendMsg('iot/led', 'led_on');
+            }else{
+                sendMsg('iot/led','led_off');
+            }
+        });
+    });
+    $(document).ready(function(){
+        $("#servo_curtain").change(function(){
+            if($("#servo_curtain").is(":checked")){
+                sendMsg('iot/servo','servo_open');
+            }else{
+                sendMsg('iot/servo','servo_close');
+            }
+        });
+    });
+    </script>
   </head>
 
-  <body onload="printClock()"> <!-- body 로딩 될때 printClock() 출력 -->
+
+  <body onload="printClock(); cctvinit();"> <!-- body 로딩 될때 printClock() 출력 -->
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <!-- Menu -->
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
-            <a href="index.html" class="app-brand-link">
+            <a href="/home" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <img src="{% static 'img/icons8-home-48.png' %}"/>
                   <defs>
@@ -124,9 +387,20 @@
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item active">
-              <a href="/" class="menu-link">
+              <a href="/home" class="menu-link">
                 <img src="{% static 'img/icons8-dashboard-32.png' %}">&nbsp
                 <div data-i18n="Analytics"> Dashboard</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="/logout" class="menu-link">
+                <img src="{% static 'img/icons-logout-32.png' %}">&nbsp
+                <div data-i18n="Analytics"> Logout</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="/pwdchk" class="menu-link">
+                <div data-i18n="Analytics"> 패스워드 수정</div>
               </a>
             </li>
           </ul>
@@ -142,14 +416,14 @@
                 <div class="col-lg-8 mb-4 order-0">
                   <div class="card">
                     <div class="d-flex align-items-end row">
-                      <div class="col-sm-7">
+                      <div class="col-sm-12">
                         <div class="card-body">
                           <h5 class="card-title text-primary">Home CCTV <img src="{% static 'img/icons8-cctv-32.png' %}"/></h5>
-                          <img src="#" id="myimg" width="135%" height="400"/><br><br>
+                          <img src="{% static 'img/cctvwait.png' %}" id="myimg" width="100%" height="100%"/><br><br>
                           <!-- 버튼을 누르면 cctv on / off -->
                           <div style="display:flex">
-                            <input class="btn btn-sm btn-outline-primary" type="button" id="cctv" value="CCTV Off" onclick="CctvOnOff()">
-                            <div style="margin-left:150px; width:100%; height:15px; color:#666; font-size:20px; text-align:center;" id="clock">
+                            <input class="btn btn-sm btn-outline-primary" type="button" id="cctv" value="CCTV On" onclick="CctvOnOff()">
+                            <div style="margin-left:10%; margin-top: 10px; margin-bottom: 10px; width:100%; height:15px; color:#666; font-size:20px; text-align:center;" id="clock">
                             </div>
                           </div>
                         </div>
@@ -167,9 +441,9 @@
                               <img src="{% static 'img/icons8-light-48.png' %}"/>
                             </div>
                             <div class="dropdown">
-                              <span class="fw-semibold d-block mb-1">Room Light</span>
+                              <span class="fw-semibold d-block mb-1" id="led">Room Light</span>
                               <div class="form-check form-switch">
-                                  <input class="form-check-input" type="checkbox" role="switch" checked />
+                                  <input class="form-check-input" id="led_ck" type="checkbox" role="switch" checked />
                               </div>
                             </div>
                           </div>
@@ -184,39 +458,16 @@
                               <img src="{% static 'img/icons8-curtain-48.png' %}"/>
                             </div>
                             <div class="dropdown">
-                              <span class="fw-semibold d-block mb-1">Curtain&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                              <span class="fw-semibold d-block mb-1" id="servo">Curtain&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
                               <div class="form-check form-switch">
-                                  <input class="form-check-input" type="checkbox" role="switch" checked />
+                                  <input class="form-check-input" id="servo_curtain" type="checkbox" role="switch" checked />
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-13 col-md-12 col-8 mb-4" style="display:block">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0"><br>
-                              <img src="{% static 'img/icons8-alarm-clock-48.png' %}"/>
-                            </div>
-                            <div class="dropdown">
-                              <div class="d-flex">
-                                <span class="fw-semibold d-block mb-1">Alarm &nbsp&nbsp</span>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" checked />
-                                </div>
-                              </div>
-                              <div class="input-group">
-                                <button type="button" class="btn btn-outline-primary" onclick="#">Save</button>
-                                <input type="text" class="form-control" placeholder="HH:MM"/>
-                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
                     <div class="col-lg-13 col-md-12 col-8 mb-4">
                       <div class="card">
                         <div class="card-body">
@@ -226,19 +477,27 @@
                             </div>
                             <div class="dropdown">
                               <div class="d-flex">
-                                <span class="fw-semibold d-block mb-1">반려동물 밥 시간 &nbsp&nbsp</span>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" checked />
-                                </div>
+                                <span class="fw-semibold d-block mb-1">반려동물&nbsp&nbsp</span><span id="mypet"/>
                               </div>
                               <div class="input-group">
-                                <button type="button" class="btn btn-outline-primary" onclick="#">Save</button>
-                                <input type="text" class="form-control" placeholder="HH:MM"/>
+                                <input type="time" class="form-control" id="am"/>
+                                <input type="time" class="form-control" id="pm"/>
+                                <button type="button" class="btn btn-outline-primary" onclick="setTime()">Save</button>
                                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                               </div>
                               <div class="input-group">
-                                <button type="button" class="btn btn-outline-primary" onclick="#">Save</button>
-                                <input type="text" class="form-control" placeholder="HH:MM"/>
+                                <button type="button" class="btn btn-outline-primary" onclick="mypetfeed()">수동 밥주기</button>
+                                <button type="button" class="btn btn-outline-primary" onclick="mypetwater()">수동 물주기</button>
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                </div>
+                              <div class="input-group">
+                                <text class="form-control" >사료 설정 시간</text>
+                                <text class="form-control" id="feedtimesettings"></text>
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                              </div>
+                              <div class="input-group">
+                                <text class="form-control" >현재물높이</text>
+                                <text class="form-control" id="waterlevel"></text>
                                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                               </div>
                             </div>
@@ -299,7 +558,20 @@
                         </div>
                       </div>
                     </div>
-                    <script type="text/javascript" src="{% static 'js/chart.js' %}">
+
+                    <script type="text/javascript">
+                    var dht_humid = JSON.stringify('{{dht.jsonHumid}}').replace(/&#x27;|[|\"|{|}| ]/g,"");
+                    var dht_humid = dht_humid.split(/:|,/g);
+                    var dht_temp = JSON.stringify('{{dht.jsonTemp}}').replace(/&#x27;|[|\"|{|}| ]/g,"");
+                    var dht_temp = dht_temp.split(/:|,/g);
+                    var dht_dust = JSON.stringify('{{dht.jsonDust}}').replace(/&#x27;|[|\"|{|}| ]/g,"");
+                    var dht_dust = dht_dust.split(/:|,/g);
+                    </script>
+                    <script src="{% static 'js/chart.js' %}"></script>
+                    </script>
+                    <script type="text/javascript">
+                        // 사용자 정의 함수를 호출해서 mqtt가 동작할 수 있도록 함
+                        MQTTConnect()
                     </script>
                   </div>
                 </div>
@@ -313,3 +585,4 @@
     </div>
   </body>
 </html>
+{% endif %}

@@ -24,10 +24,9 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   data: (function (){
                                     var now = new Date();
                                     var res = [];
-                                    var len = 20;
-                                    while (len--) {
-                                      res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-                                      now = new Date(now - 2000);
+                                    for(let i =0; i<dht_temp.length; i+=2) {
+                                      res.unshift(dht_temp[i].replace(/\//g,":"));
+                                      now = new Date(dht_temp[i]);
                                     }
                                     return res;
                                   })()
@@ -53,12 +52,10 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   },
                                   smooth: true, //부드러운 line 표현
                                   yAxisIndex: 0, //yAxis 0번째 사용
-                                  data: (function (){
+                                  data: (function(){
                                     var res = [];
-                                    var len = 0;
-                                    while (len < 20) {
-                                      res.push((Math.random()*30 + 5).toFixed(1) - 0); //랜덤 데이터 생성
-                                      len++;
+                                    for(let i=0; i<dht_temp.length; i+=2) {
+                                      res.push(dht_temp[i+1]);
                                     }
                                     return res;
                                   })()
@@ -88,10 +85,9 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   data: (function (){
                                     var now = new Date();
                                     var res = [];
-                                    var len = 20;
-                                    while (len--) {
-                                      res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-                                      now = new Date(now - 2000);
+                                    for (let i=0; i<dht_humid.length; i+=2) {
+                                      res.unshift(dht_humid[i].replace(/\//g,":"));
+                                      now = new Date(dht_humid[i]);
                                     }
                                     return res;
                                   })()
@@ -117,12 +113,10 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   },
                                   smooth: true, //부드러운 line 표현
                                   yAxisIndex: 0, //yAxis 0번째 사용
-                                  data: (function (){
+                                  data: (function(){
                                     var res = [];
-                                    var len = 0;
-                                    while (len < 20) {
-                                      res.push((Math.random()*60 + 5).toFixed(1) - 0); //랜덤 데이터 생성
-                                      len++;
+                                    for(let i=0; i<dht_humid.length; i+=2) {
+                                      res.push(dht_humid[i+1]);
                                     }
                                     return res;
                                   })()
@@ -152,10 +146,9 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   data: (function (){
                                     var now = new Date();
                                     var res = [];
-                                    var len = 20;
-                                    while (len--) {
-                                      res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-                                      now = new Date(now - 2000);
+                                    for (let i=0; i<dht_dust.length; i+=2) {
+                                        res.unshift(dht_dust[i].replace(/\//g,":"));
+                                        now = new Date(dht_dust[i])
                                     }
                                     return res;
                                   })()
@@ -183,10 +176,8 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                   yAxisIndex: 0, //yAxis 0번째 사용
                                   data: (function (){
                                     var res = [];
-                                    var len = 0;
-                                    while (len < 20) {
-                                      res.push((Math.random()*150 + 5).toFixed(1) - 0); //랜덤 데이터 생성
-                                      len++;
+                                    for(let i=0; i<dht_dust.length; i+=2) {
+                                        res.push(dht_dust[i+1])
                                     }
                                     return res;
                                   })()
@@ -200,7 +191,7 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                             myChart3.setOption(option3);
 
                             //데이터를 생성하고 삭제합니다.
-                            setInterval(function (){
+                            setInterval(function setdata(value, time){
                                 //x축에 실시간 데이터 생성
                                 var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
 
@@ -213,9 +204,9 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                 data1.shift();
                                 data2.shift();
                                 //데이터의 가장 오른쪽 값을 추가
-                                data0.push((Math.random() * 30 + 5).toFixed(1) - 0);
-                                data1.push((Math.random() * 100).toFixed(1) - 0);
-                                data2.push((Math.random() * 300).toFixed(1) - 0);
+                                data0.push(temp);
+                                data1.push(humid);
+                                data2.push(dust);
 
 
                                 //x축에 시간 데이터 추가
@@ -230,4 +221,4 @@ var myChart1 = echarts.init(document.getElementById('chart1'));
                                 myChart1.setOption(option1);
                                 myChart2.setOption(option2);
                                 myChart3.setOption(option3);
-                            }, 2100);
+                            }, 5000);
